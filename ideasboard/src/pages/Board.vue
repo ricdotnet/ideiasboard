@@ -102,7 +102,7 @@
   }
 
   function addNote(ideia: any) {
-    state.ideias.push(ideia);
+    state.ideias.push({ ...ideia, likes: 0 });
   }
 
   function resolveShareableLink(): string {
