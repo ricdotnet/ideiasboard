@@ -3,10 +3,13 @@
     <div class="nav__container">
       <div class="nav__logo">IdeiasBoard</div>
       <div class="nav__links">
-<!--         <router-link to="/">Home</router-link>-->
-<!--         <router-link to="/boards">Create</router-link>-->
-<!--         <a href="javascript:void(0)" @click="onCreateBoardClick()">Create</a>-->
-        <Button label="Create" color="plain" text="blue" @click="onCreateBoardClick()"></Button>
+        <router-link to="/">Home</router-link>
+        <Button v-if="!isInBoard()"
+                label="Create"
+                color="plain"
+                text="blue"
+                @click="onCreateBoardClick()">
+        </Button>
       </div>
     </div>
   </div>
@@ -16,6 +19,7 @@
 
 <script setup lang="ts">
   import { reactive, ref } from 'vue';
+  import { useRoute } from 'vue-router';
   import { Button } from '../../common';
   import { CreateBoardDialog } from '../';
 
@@ -24,9 +28,14 @@
     onCreateBoardOpen: () => void;
   }
 
+  const route = useRoute();
   const createBoardDialog = ref<ICBD | null>(null);
 
   const state = reactive({});
+
+  function isInBoard(): boolean {
+    return route.path.includes('/board/');
+  }
 
   function onCreateBoardClick() {
     return createBoardDialog.value?.onCreateBoardOpen();
@@ -48,7 +57,7 @@
     }
 
     &__links {
-      @apply space-x-4;
+      @apply flex items-center space-x-4;
     }
   }
 </style>

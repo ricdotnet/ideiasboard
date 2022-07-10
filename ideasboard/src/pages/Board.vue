@@ -1,51 +1,112 @@
 <template>
   <template v-if="state.loading">Loading ...</template>
+  <template v-else-if="!state.loading && !state.board">
+    The board you are looking for does not exist.
+  </template>
   <template v-else>
+    <div class="flex items-center space-x-2">
+      <Input class="w-full" ref="ideia" id="ideia"/>
+      <Button label="Add"
+              color="plain"
+              text="blue"
+              @click="onClickAddIdeia()"
+              :disabled="state.isAddingIdeia">
+        <Loading :is-loading="state.isAddingIdeia"/>
+      </Button>
+    </div>
     <div class="mb-5">
       {{ state.board.name }}
     </div>
-    <div v-if="!state.notes.length">No notes on this board.</div>
+    <div v-if="!state.ideias.length">No ideias on this board yet.</div>
     <template v-else>
-      <div v-for="(note, index) of state.notes" :key="index">
-        {{ note.content }}
+      <div class="grid grid-cols-4 gap-2">
+        <div v-for="(ideia, index) of state.ideias" :key="index">
+          <IdeiaItem :ideia="ideia"/>
+        </div>
       </div>
     </template>
+
+    <!-- shareable link -->
+    <div class="mt-16">
+      <div class="text-lg pl-3">Share this link with your team and start brainstorming.</div>
+      <div class="flex items-center space-x-2">
+        <Input class="w-full" id="link" disabled="true" :value="resolveShareableLink()"/>
+        <IconButton color="plain">
+          <ClipboardCopyIcon class="w-5"/>
+        </IconButton>
+      </div>
+    </div>
   </template>
 </template>
 
 <script setup lang="ts">
-  import { onBeforeMount, reactive } from 'vue';
+  import { inject, onBeforeMount, reactive, ref } from 'vue';
   import { useRoute } from 'vue-router';
+  import { Button, IconButton, Input, Loading } from '../components/common';
+  import { IdeiaItem } from '../components/blocks';
+  import { useSubscriptionStore } from '../stores/SubscriptionStore';
+  import { ClipboardCopyIcon } from '@heroicons/vue/solid';
+  import axios from 'axios';
 
-  import { usePocketbaseStore } from '../stores';
+  interface IInput {
+    getValue: () => void;
+    resetValue: () => void;
+  }
 
+  const base = inject('base');
+  const api = inject('api');
   const { params } = useRoute();
-  const pocketbase = usePocketbaseStore();
+  const sub = useSubscriptionStore();
+  const ideia = ref<IInput>();
 
   onBeforeMount(async () => {
-    state.board = await pocketbase.getClient.Records.getOne('boards', <string>params['id']);
-
-    const notes = await pocketbase.getClient.Records.getList('notes', 20, 10, { filter: `board='${params['id']}'`, sort: '+created' });
-    state.notes = notes.items;
-
-    pocketbase.subToCollection('notes');
+    axios.get(`${api}/api/board/${params['key']}`)
+      .then(({ data }) => {
+        state.board = data.boardData;
+        state.ideias = [...data.ideias];
+        sub.subscribe(params['key']);
+        sub.getSub.addEventListener('ES_IDEIA', (e: any) => {
+          addNote(JSON.parse(e.data));
+        });
+      }).catch(({ response }) => {
+      if ( response.status === 404 ) {
+        console.error(response.data.error);
+      }
+    });
 
     state.loading = false;
-    // state.evtSource = new EventSource('http://localhost:3200/api/realtime', {
-    //   withCredentials: false
-    // });
-    //
-    // state.evtSource.onmessage = (e: any) => {
-    //   console.log(e.data);
-    // };
   });
 
   const state = reactive({
     loading: true,
-    board: <any>'',
-    notes: <any>[],
-    evtSource: <any>'',
+    board: {},
+    ideias: <any>[],
+    isAddingIdeia: false,
   });
+
+  function onClickAddIdeia() {
+    if ( !ideia.value?.getValue() ) return;
+
+    axios.post(`${api}/api/ideia`, {
+      board: params['key'],
+      clientId: sub.getClientId,
+      content: ideia.value?.getValue(),
+    })
+      .then(({ data }) => {
+        // console.log(data);
+        ideia.value?.resetValue();
+      }).catch(({ response }) => {
+      // console.error(response.error);
+    });
+  }
+
+  function addNote(ideia: any) {
+    state.ideias.push(ideia);
+  }
+
+  function resolveShareableLink(): string {
+    return `${base}/#/board/${params['key']}`;
+  }
 </script>
 
 <style lang="scss" scoped>

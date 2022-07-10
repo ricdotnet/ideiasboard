@@ -14,9 +14,9 @@ const usePocketbaseStore = defineStore('pocketbase', {
       this.client = new PocketBase('http://localhost:8090');
       console.log('Pocketbase client initiated.');
     },
-    subToCollection(collectionId: string) {
+    subToCollection(collectionId: string, fn: any) {
       this.client.Realtime.subscribe(collectionId, function (e: any) {
-        console.log(e.record);
+        fn(e.record);
       });
     }
   }

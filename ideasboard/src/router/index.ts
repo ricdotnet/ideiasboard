@@ -5,7 +5,7 @@ import { Home, Boards, Board } from '../pages';
 const routes: RouteRecordRaw[] = [
   { path: '/', component: Home },
   { path: '/boards', component: Boards },
-  { path: '/board/:id', component: Board },
+  { path: '/board/:key', component: Board },
 ];
 
 const router = createRouter({

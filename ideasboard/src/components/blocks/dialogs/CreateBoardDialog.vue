@@ -6,32 +6,37 @@
           @on-close="onCreateBoardClose()"
           @on-submit="onCreateBoardSave()">
     <form class="flex flex-col space-y-3">
-      <Input ref="name" id="name" label="Name"/>
-      <Input ref="key" id="key" label="Key (optional)"/>
+      <Input ref="name" id="name" :label="`Name (${key})`"/>
+      <Input ref="secret" id="secret" label="Secret (optional)"/>
     </form>
   </Dialog>
 </template>
 
 <script setup lang="ts">
-  import { computed, reactive, ref } from 'vue';
+  import { computed, inject, reactive, ref } from 'vue';
+  import { useRouter } from 'vue-router';
   import { Dialog, Input } from '../../common';
-
-  import { usePocketbaseStore } from '../../../stores';
-  const pocketbase = usePocketbaseStore();
+  import { v4 } from 'uuid';
+  import axios from 'axios';
 
   interface IInput {
     getValue: () => void;
   }
+
+  const api = inject('api');
+  const router = useRouter();
   const name = ref<IInput>();
-  const key = ref<IInput>();
+  const secret = ref<IInput>();
+  const key = computed(() => v4());
 
   const state = reactive({
     isCreatingBoard: false,
     isSavingBoard: false,
     form: {
       name: computed(() => name.value?.getValue()),
-      key: computed(() => key.value?.getValue()),
-    }
+      key: key,
+      secret: computed(() => secret.value?.getValue()),
+    },
   });
 
   function onCreateBoardOpen() {
@@ -40,9 +45,14 @@
 
   async function onCreateBoardSave() {
     state.isSavingBoard = true;
-    const record = await pocketbase.getClient.Records.create('boards', {
-      name: state.form.name,
-    });
+
+    try {
+      await axios.post(`${api}/api/board`, state.form);
+      router.push(`/board/${key.value}`);
+    } catch (error) {
+      // handle error
+    }
+
     state.isSavingBoard = false;
     state.isCreatingBoard = false;
   }
