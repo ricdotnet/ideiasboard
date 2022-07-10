@@ -14,17 +14,39 @@ ideia.post('/', (req, res) => {
   });
 
   // TODO: all connections, but the client sending, on this board should receive ideia.
-  broadcast(req.body);
+  broadcastIdeia(req.body);
 
   res.status(200).send({ message: 'Ideia added to the board.' });
 });
 
-function broadcast({ board, clientId, content }: any) {
+ideia.patch('/like', (req, res) => {
+  const { ideia, board, clientId } = req.body;
+
+  DAO.client().run('UPDATE ideias SET likes = likes + 1 WHERE id = $ideia', {
+    $ideia: ideia,
+  });
+
+  broadcastIdeiaLike(req.body);
+
+  res.status(200).send({ message: 'Successfully liked the ideia.' });
+});
+
+// TODO: abstract these events
+function broadcastIdeia({ board, clientId, content }: any) {
   connections.forEach(c => {
     if ( c.board === board /*&& c.id !== clientId*/ ) {
       c.conn.write(`id: ${clientId}\n`);
       c.conn.write(`event: ES_IDEIA\n`);
       c.conn.write(`data: {"content": "${content}"}\n\n`);
+    }
+  });
+}
+function broadcastIdeiaLike({ board, clientId, ideia }: any) {
+  connections.forEach(c => {
+    if ( c.board === board /*&& c.id !== clientId*/ ) {
+      c.conn.write(`id: ${clientId}\n`);
+      c.conn.write(`event: ES_IDEIA_LIKE\n`);
+      c.conn.write(`data: {"ideia": "${ideia}"}\n\n`);
     }
   });
 }
