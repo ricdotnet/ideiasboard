@@ -4,17 +4,12 @@ import { DAO } from '../../db/DAO';
 
 const ideia: Router = Router();
 
-ideia.post('/', (req, res) => {
-  const { board, content, clientId } = req.body;
-
-  DAO.client().run('INSERT INTO ideias (board, content, created_at) VALUES ($board, $content, $createdAt)', {
-    $board: board,
-    $content: content,
-    $createdAt: Date.now(),
-  });
+ideia.post('/', async (req, res) => {
+  let ideia = await insertIdeia(req.body);
 
   // TODO: all connections, but the client sending, on this board should receive ideia.
-  broadcastIdeia(req.body);
+  ideia = Object.assign({}, { ...req.body, ...ideia });
+  broadcastIdeia(ideia);
 
   res.status(200).send({ message: 'Ideia added to the board.' });
 });
@@ -32,15 +27,16 @@ ideia.patch('/like', (req, res) => {
 });
 
 // TODO: abstract these events
-function broadcastIdeia({ board, clientId, content }: any) {
+function broadcastIdeia({ board, clientId, content, id }: any) {
   connections.forEach(c => {
     if ( c.board === board /*&& c.id !== clientId*/ ) {
       c.conn.write(`id: ${clientId}\n`);
       c.conn.write(`event: ES_IDEIA\n`);
-      c.conn.write(`data: {"content": "${content}"}\n\n`);
+      c.conn.write(`data: {"ideia": { "content": "${content}", "id": ${id} }}\n\n`);
     }
   });
 }
+
 function broadcastIdeiaLike({ board, clientId, ideia }: any) {
   connections.forEach(c => {
     if ( c.board === board /*&& c.id !== clientId*/ ) {
@@ -48,6 +44,19 @@ function broadcastIdeiaLike({ board, clientId, ideia }: any) {
       c.conn.write(`event: ES_IDEIA_LIKE\n`);
       c.conn.write(`data: {"ideia": "${ideia}"}\n\n`);
     }
+  });
+}
+
+function insertIdeia({ board, content }: any): Promise<{}> {
+  return new Promise((resolve, reject) => {
+    DAO.client().run('INSERT INTO ideias (board, content, created_at) VALUES ($board, $content, $createdAt)', {
+      $board: board,
+      $content: content,
+      $createdAt: Date.now(),
+    }, function (error) {
+      // if (error) (error);
+      resolve({ id: this.lastID });
+    });
   });
 }
 

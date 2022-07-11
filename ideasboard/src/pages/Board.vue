@@ -101,8 +101,9 @@
     });
   }
 
-  function addNote(ideia: any) {
-    state.ideias.push({ ...ideia, likes: 0 });
+  function addNote({ ideia }: any) {
+    console.log(ideia);
+    state.ideias.push({ id: ideia.id, content: ideia.content, likes: 0 });
   }
 
   function resolveShareableLink(): string {
