@@ -44,7 +44,7 @@ export class DAO {
         CREATE TABLE IF NOT EXISTS ideias (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         board TEXT NOT NULL,
-        content TEXT UNIQUE NOT NULL,
+        content TEXT NOT NULL,
         created_at INTEGER NOT NULL,
         likes INTEGER DEFAULT 0,
         FOREIGN KEY (board) REFERENCES boards(key))

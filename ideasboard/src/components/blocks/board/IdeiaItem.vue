@@ -43,7 +43,7 @@
   @import "../../../assets/_defaults.scss";
 
   .ideia-item {
-    @apply border border-gray-300 rounded-md shadow text-sm px-4 py-2;
+    @apply border border-gray-300 rounded-md shadow text-sm px-4 py-2 bg-white;
 
     &__bottom {
       @apply flex items-center space-x-2 mt-2;

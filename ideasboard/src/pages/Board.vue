@@ -18,13 +18,13 @@
       {{ state.board.name }}
     </div>
     <div v-if="!state.ideias.length">No ideias on this board yet.</div>
-    <template v-else>
-      <div class="grid grid-cols-4 gap-2">
+    <div class="grid grid-cols-4 gap-2">
+      <TransitionGroup name="ideia">
         <div v-for="(ideia, index) of state.ideias" :key="index">
           <IdeiaItem :ideia="ideia" :board="state.board.key" :client-id="sub.getClientId"/>
         </div>
-      </div>
-    </template>
+      </TransitionGroup>
+    </div>
 
     <ShareableLink :link="resolveShareableLink()"/>
   </template>
@@ -112,4 +112,13 @@
 </script>
 
 <style lang="scss" scoped>
+  .ideia-enter-active,
+  .ideia-leave-active {
+    transition: transform 0.3s cubic-bezier(0, 1.82, .71, .76);
+  }
+
+  .ideia-enter-from,
+  .ideia-leave-to {
+    @apply scale-0;
+  }
 </style>

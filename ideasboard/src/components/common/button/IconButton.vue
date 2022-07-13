@@ -1,7 +1,7 @@
 <template>
-  <div class="icon-button" :class="state.color">
+  <button class="icon-button" :class="state.color">
     <slot/>
-  </div>
+  </button>
 </template>
 
 <script setup lang="ts">

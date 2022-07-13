@@ -54,7 +54,7 @@ function insertIdeia({ board, content }: any): Promise<{}> {
       $content: content,
       $createdAt: Date.now(),
     }, function (error) {
-      // if (error) (error);
+      if (error) console.log(error);
       resolve({ id: this.lastID });
     });
   });
