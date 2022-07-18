@@ -30,11 +30,17 @@
     clientId: props.clientId,
   });
 
+  const emits = defineEmits<{
+    (event: 'onLiked'): void;
+  }>();
+
   async function onClickLikeIdeia() {
     await axios.patch(`${api}/api/ideia/like`, {
       ideia: state.ideia.id,
       board: state.board,
       clientId: state.clientId,
+    }).then(() => {
+      emits('onLiked');
     });
   }
 </script>
@@ -43,7 +49,7 @@
   @import "../../../assets/_defaults.scss";
 
   .ideia-item {
-    @apply border border-gray-300 rounded-md shadow text-sm px-4 py-2 bg-white;
+    @apply border border-gray-300 rounded-md shadow text-sm px-4 py-2;
 
     &__bottom {
       @apply flex items-center space-x-2 mt-2;

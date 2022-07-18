@@ -18,10 +18,14 @@
       {{ state.board.name }}
     </div>
     <div v-if="!state.ideias.length">No ideias on this board yet.</div>
-    <div class="grid grid-cols-4 gap-2">
+    <div class="grid grid-cols-2 xl:grid-cols-3 gap-2">
       <TransitionGroup name="ideia">
         <div v-for="(ideia, index) of state.ideias" :key="index">
-          <IdeiaItem :ideia="ideia" :board="state.board.key" :client-id="sub.getClientId"/>
+          <IdeiaItem :ideia="ideia"
+                     :board="state.board.key"
+                     :client-id="sub.getClientId"
+                     @on-liked="sortIdeias()"
+          />
         </div>
       </TransitionGroup>
     </div>
@@ -30,8 +34,9 @@
   </template>
 </template>
 
+<!-- TODO: refactor this component... extract logic to services -->
 <script setup lang="ts">
-  import { inject, onBeforeMount, reactive, ref } from 'vue';
+  import { inject, onBeforeMount, onUnmounted, reactive, ref } from 'vue';
   import { useRoute } from 'vue-router';
   import { Button, Input, Loading } from '../components/common';
   import { IdeiaItem, ShareableLink } from '../components/blocks';
@@ -49,11 +54,18 @@
   const sub = useSubscriptionStore();
   const ideia = ref<IInput>();
 
+  const state = reactive({
+    loading: true,
+    board: {},
+    ideias: <any>[],
+    isAddingIdeia: false,
+  });
+
   onBeforeMount(async () => {
     axios.get(`${api}/api/board/${params['key']}`)
       .then(({ data }) => {
         state.board = data.boardData;
-        state.ideias = [...data.ideias];
+        state.ideias = data.ideias.sort((a: any, b: any) => b.likes - a.likes);
         sub.subscribe(params['key']);
         sub.getSub.addEventListener('ES_IDEIA', (e: any) => {
           addNote(JSON.parse(e.data));
@@ -66,6 +78,7 @@
               i.likes++;
             }
           });
+          state.ideias.sort((a: any, b: any) => b.likes - a.likes);
         });
 
         document.title = `Board: ${state.board.name}`;
@@ -78,11 +91,8 @@
     state.loading = false;
   });
 
-  const state = reactive({
-    loading: true,
-    board: {},
-    ideias: <any>[],
-    isAddingIdeia: false,
+  onUnmounted(() => {
+    sub.unsub();
   });
 
   function onClickAddIdeia() {
@@ -102,12 +112,15 @@
   }
 
   function addNote({ ideia }: any) {
-    console.log(ideia);
     state.ideias.push({ id: ideia.id, content: ideia.content, likes: 0 });
   }
 
+  function sortIdeias() {
+    state.ideias = state.ideias.sort((a: any, b: any) => b.likes - a.likes);
+  }
+
   function resolveShareableLink(): string {
-    return `${base}/#/board/${params['key']}`;
+    return `${base}/board/${params['key']}`;
   }
 </script>
 

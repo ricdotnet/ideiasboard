@@ -3,15 +3,7 @@
 </template>
 
 <script setup lang="ts">
-  import { reactive, onMounted } from 'vue';
-  import {usePocketbaseStore} from '../stores/PocketbaseStore';
-
-  const pocketbase = usePocketbaseStore();
-
-  onMounted(async () => {
-    // const records = await pocketbase.getClient.Records.getList('boards');
-    // console.log(records.items);
-  });
+  import { reactive } from 'vue';
 
   const state = reactive({});
 

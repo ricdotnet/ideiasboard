@@ -26,6 +26,10 @@ const useSubscriptionStore = defineStore('subscription', {
           });
         });
       }
+    },
+    unsub() {
+      this.eventSource.close();
+      this.eventSource = null;
     }
   }
 });

@@ -1,5 +1,5 @@
 const useDebounce = (func: any, delay = 500) => {
-  let timer: number | undefined;
+  let timer: NodeJS.Timeout | undefined;
 
   return (...args: any) => {
     function debouncedFunc() {
