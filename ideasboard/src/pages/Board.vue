@@ -1,7 +1,7 @@
 <template>
   <template v-if="state.loading">Loading ...</template>
   <template v-else-if="!state.loading && !state.board">
-    The board you are looking for does not exist.
+    <BoardNotFound />
   </template>
   <template v-else>
     <div class="flex items-center space-x-2">
@@ -39,7 +39,7 @@
   import { inject, onBeforeMount, onUnmounted, reactive, ref } from 'vue';
   import { useRoute } from 'vue-router';
   import { Button, Input, Loading } from '../components/common';
-  import { IdeiaItem, ShareableLink } from '../components/blocks';
+  import { IdeiaItem, ShareableLink, BoardNotFound } from '../components/blocks';
   import { useSubscriptionStore } from '../stores/SubscriptionStore';
   import axios from 'axios';
 
@@ -56,7 +56,7 @@
 
   const state = reactive({
     loading: true,
-    board: {},
+    board: null,
     ideias: <any>[],
     isAddingIdeia: false,
   });
