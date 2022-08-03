@@ -4,6 +4,7 @@
       <div class="nav__logo">IdeiasBoard</div>
       <div class="nav__links">
         <router-link to="/">Home</router-link>
+        <a href="javascript:;" @click="onLoginClick()">Login</a>
         <Button v-if="!isInBoard()"
                 label="Create"
                 color="plain"
@@ -14,24 +15,27 @@
     </div>
   </div>
 
+  <LoginDialog ref="loginDialog"/>
   <CreateBoardDialog ref="createBoardDialog"/>
 </template>
 
 <script setup lang="ts">
-  import { reactive, ref } from 'vue';
+  import { ref } from 'vue';
   import { useRoute } from 'vue-router';
   import { Button } from '../../common';
-  import { CreateBoardDialog } from '../';
+  import { CreateBoardDialog, LoginDialog } from '../';
 
   // TODO: Extract types / interfaces
   interface ICBD {
     onCreateBoardOpen: () => void;
   }
+  interface ILoginDialog {
+    onLoginOpen: () => void;
+  }
 
   const route = useRoute();
-  const createBoardDialog = ref<ICBD | null>(null);
-
-  const state = reactive({});
+  const createBoardDialog = ref<ICBD>();
+  const loginDialog = ref<ILoginDialog>();
 
   function isInBoard(): boolean {
     return route.path.includes('/board/');
@@ -39,6 +43,10 @@
 
   function onCreateBoardClick() {
     return createBoardDialog.value?.onCreateBoardOpen();
+  }
+
+  function onLoginClick() {
+    return loginDialog.value?.onLoginOpen();
   }
 </script>
 

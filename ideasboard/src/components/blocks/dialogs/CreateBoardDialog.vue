@@ -3,6 +3,7 @@
           :show-actions="true"
           :is-open="state.isCreatingBoard"
           :is-actioning="state.isSavingBoard"
+          submit-label="Create"
           @on-close="onCreateBoardClose()"
           @on-submit="onCreateBoardSave()">
     <form class="flex flex-col space-y-3">

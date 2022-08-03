@@ -20,7 +20,7 @@
                       @click="onClickDialogClose()"
                       :disabled="state.isActioning">
               </Button>
-              <Button label="Create"
+              <Button :label="state.submitLabel"
                       color="plain"
                       text="blue"
                       @click="onClickDialogSubmit()"
@@ -59,6 +59,7 @@
     isActioning: boolean;
     isOpen: boolean;
     title: string;
+    submitLabel: string;
   }>();
 
   const emits = defineEmits<{
@@ -71,6 +72,7 @@
     isActioning: computed(() => props.isActioning),
     isOpen: computed(() => props.isOpen),
     title: props.title || 'Dialog',
+    submitLabel: computed(() => props.submitLabel),
   });
 
   function onClickDialogSubmit() {
