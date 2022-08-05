@@ -15,7 +15,9 @@
     </div>
   </div>
 
-  <LoginDialog ref="loginDialog"/>
+  <LoginDialog ref="loginDialog"
+               @on-login-success="onLoginSuccess"
+               @on-login-error="onLoginError"/>
   <CreateBoardDialog ref="createBoardDialog"/>
 </template>
 
@@ -26,15 +28,16 @@
   import { CreateBoardDialog, LoginDialog } from '../';
 
   // TODO: Extract types / interfaces
-  interface ICBD {
+  interface ICreateBoardDialog {
     onCreateBoardOpen: () => void;
   }
+
   interface ILoginDialog {
     onLoginOpen: () => void;
   }
 
   const route = useRoute();
-  const createBoardDialog = ref<ICBD>();
+  const createBoardDialog = ref<ICreateBoardDialog>();
   const loginDialog = ref<ILoginDialog>();
 
   function isInBoard(): boolean {
@@ -47,6 +50,14 @@
 
   function onLoginClick() {
     return loginDialog.value?.onLoginOpen();
+  }
+
+  function onLoginSuccess() {
+    console.log('hello world');
+  }
+
+  function onLoginError() {
+    console.log('hello another world');
   }
 </script>
 

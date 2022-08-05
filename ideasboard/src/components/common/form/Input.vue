@@ -2,11 +2,11 @@
   <div>
     <label v-if="state.label" :for="state.id" class="label">{{ state.label }}</label>
     <input ref="input"
-           :id="state.id"
            class="input"
-           @keyup="onInputChange()"
+           :id="state.id"
            :disabled="state.disabled"
-           :value="state.customValue"/>
+           :value="state.customValue"
+           @keyup="onInputChange()"/>
   </div>
 </template>
 
