@@ -1,8 +1,14 @@
+import { config } from 'dotenv';
 import express, { Express } from 'express';
 import cors from 'cors';
 import { DAO } from './db/DAO';
-
 import { api } from './api';
+
+if ( process.env.NODE_ENV === 'production' ) {
+  config();
+} else {
+  config({ path: '.env.development' });
+}
 
 const app: Express = express();
 
