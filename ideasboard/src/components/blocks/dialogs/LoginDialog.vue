@@ -7,7 +7,7 @@
           @on-close="onLoginClose()"
           @on-submit="onLoginSubmit()">
     <template v-if="state.isError">
-      <ErrorMessage message="Could not login. Please try again." />
+      <ErrorMessage message="Could not login. Please try again."/>
     </template>
     <form class="flex flex-col space-y-3">
       <Input ref="email" id="email" label="Email" type="email"/>
@@ -46,21 +46,21 @@
     state.isSignInOpen = false;
   }
 
-  function successCb() {
-    emits('onLoginSuccess');
-  }
-
-  function errorCb() {
-    // emits('onLoginError');
-    state.isError = true;
-    setTimeout(() => state.isError = false, 5000);
-  }
-
   // TODO: This should filter emails only too
-  function onLoginSubmit() {
+  async function onLoginSubmit() {
     if ( !email.value?.getValue() ) return;
     state.isSigningIn = true;
-    doAuth(email.value?.getValue<string>(), successCb, errorCb);
+    const { error, data } = await doAuth(email.value?.getValue<string>());
+
+    if ( error !== undefined ) {
+      state.isError = true;
+      setTimeout(() => state.isError = false, 10000);
+    }
+
+    if ( data !== undefined ) {
+      emits('onLoginSuccess');
+    }
+
     state.isSigningIn = false;
   }
 
