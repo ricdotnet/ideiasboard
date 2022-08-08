@@ -18,7 +18,7 @@
 <script setup lang="ts">
   import { reactive, ref } from 'vue';
   import { Dialog, ErrorMessage, Input } from '../../common';
-  import { useAuth } from '../../../hooks';
+  import { useAuth } from '../../../composables';
 
   interface IInput {
     getValue: <T>() => T;

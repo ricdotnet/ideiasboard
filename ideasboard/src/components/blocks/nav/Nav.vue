@@ -16,8 +16,7 @@
   </div>
 
   <LoginDialog ref="loginDialog"
-               @on-login-success="onLoginSuccess"
-               @on-login-error="onLoginError"/>
+               @on-login-success="onLoginSuccess"/>
   <CreateBoardDialog ref="createBoardDialog"/>
 </template>
 
@@ -54,10 +53,6 @@
 
   function onLoginSuccess() {
     console.log('hello world');
-  }
-
-  function onLoginError() {
-    console.log('hello another world');
   }
 </script>
 

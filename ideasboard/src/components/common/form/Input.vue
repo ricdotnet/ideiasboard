@@ -12,7 +12,7 @@
 
 <script setup lang="ts">
   import { computed, reactive, ref } from 'vue';
-  // import { useDebounce } from '../../../hooks';
+  // import { useDebounce } from '../../../composables';
 
   const input = ref<HTMLInputElement | undefined>();
 

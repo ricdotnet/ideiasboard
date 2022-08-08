@@ -19,12 +19,13 @@
 <script setup lang="ts">
   import { onMounted, reactive } from 'vue';
   import { useRoute, useRouter } from 'vue-router';
-  import { useAuth } from '../hooks';
+  import { useAuth } from '../composables';
 
   const state = reactive({
     isAuthing: true,
     isErrored: false,
     isSuccess: false,
+    accessToken: '',
   });
 
   const router = useRouter();
@@ -45,8 +46,10 @@
         return state.isErrored = true;
       }
 
-      if (data !== undefined) {
+      if ( data !== undefined ) {
         state.isSuccess = true;
+        // @ts-ignore
+        state.accessToken = data.token;
         return setTimeout(() => router.push('/'), 3000);
       }
 

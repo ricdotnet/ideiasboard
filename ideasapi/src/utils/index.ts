@@ -1,11 +1,11 @@
 import * as crypto from 'crypto';
 import { JwtPayload, sign, verify } from 'jsonwebtoken';
 
-function randomId(size: number = 20) {
+export function randomId(size: number = 20) {
   return crypto.randomBytes(size).toString('hex');
 }
 
-function createToken(email: string): string {
+export function createToken(email: string): string {
   const token = sign({ email }, <string>process.env.SECRET, {
     algorithm: 'HS256',
     expiresIn: '15m'
@@ -14,10 +14,13 @@ function createToken(email: string): string {
   return token;
 }
 
-function verifyToken(token: string): JwtPayload | string {
+export function verifyToken(token: string): JwtPayload | string {
   const payload = verify(token, <string>process.env.SECRET);
 
   return payload;
 }
 
-export { randomId, createToken, verifyToken };
+export function isValidEmail(email: string): any {
+  const emailPattern = /^([a-z0-9_.-]+)(@)([a-z0-9_.-]+)[.]([a-z0-9]+)/g;
+  return emailPattern.test(email);
+}
