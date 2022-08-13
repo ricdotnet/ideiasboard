@@ -4,13 +4,16 @@
           :is-open="state.isSignInOpen"
           :is-actioning="state.isSigningIn"
           submit-label="Login"
-          @on-close="onLoginClose()"
-          @on-submit="onLoginSubmit()">
+          form-id="login-form"
+          @on-close="onLoginClose()">
     <template v-if="state.isError">
       <ErrorMessage message="Could not login. Please try again."/>
     </template>
-    <form class="flex flex-col space-y-3">
-      <Input ref="email" id="email" label="Email" type="email"/>
+    <form id="login-form"
+          enctype="application/x-www-form-urlencoded"
+          class="flex flex-col space-y-3"
+          @submit="onLoginSubmit">
+      <Input ref="email" id="email" label="Email" type="email" :required="true"/>
     </form>
   </Dialog>
 </template>
@@ -46,8 +49,10 @@
     state.isSignInOpen = false;
   }
 
-  // TODO: This should filter emails only too
-  async function onLoginSubmit() {
+  async function onLoginSubmit(e: Event) {
+    e.preventDefault();
+    e.stopPropagation();
+
     if ( !email.value?.getValue() ) return;
     state.isSigningIn = true;
     const { error, data } = await doAuth(email.value?.getValue<string>());

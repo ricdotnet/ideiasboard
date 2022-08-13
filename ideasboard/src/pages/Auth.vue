@@ -17,9 +17,9 @@
 </template>
 
 <script setup lang="ts">
-  import { onMounted, reactive } from 'vue';
+  import { onMounted, reactive, ref } from 'vue';
   import { useRoute, useRouter } from 'vue-router';
-  import { useAuth } from '../composables';
+  import { useAuth, useLocalStorage } from '../composables';
 
   const state = reactive({
     isAuthing: true,
@@ -31,6 +31,7 @@
   const router = useRouter();
   const { token } = useRoute().query;
   const { doTokenAuth } = useAuth();
+  const { store } = useLocalStorage();
 
   async function authenticate() {
     if ( !token ) {
@@ -39,7 +40,7 @@
     } else {
       if ( typeof token !== 'string' ) throw new Error('The token has to be of type string.');
 
-      const { error, data } = await doTokenAuth(<string>token);
+      const { error, data }: any = await doTokenAuth(<string>token);
       state.isAuthing = false;
 
       if ( error !== undefined ) {
@@ -48,8 +49,9 @@
 
       if ( data !== undefined ) {
         state.isSuccess = true;
-        // @ts-ignore
-        state.accessToken = data.token;
+        // // @ts-ignore
+        // state.accessToken = data.token;
+        store('token', ref(data.token));
         return setTimeout(() => router.push('/'), 3000);
       }
 

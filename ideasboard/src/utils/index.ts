@@ -1,5 +1,12 @@
-import { isRef, Ref } from 'vue';
+import { isRef, ref, Ref } from 'vue';
 
-export function unrwap<T>(ref: Ref | T): T {
+type RefValue = string | number | object;
+
+export function wrap(value: RefValue): Ref {
+  if (isRef(value)) throw new Error('You cannot wrap a Ref');
+  return ref<RefValue>(value);
+}
+
+export function unwrap<T extends RefValue>(ref: Ref | T): T {
   return (isRef(ref)) ? ref.value : ref;
 }

@@ -4,8 +4,10 @@
     <input ref="input"
            class="input"
            :id="state.id"
+           :type="state.type"
            :disabled="state.disabled"
            :value="state.customValue"
+           :required="state.required"
            @keyup="onInputChange()"/>
   </div>
 </template>
@@ -14,13 +16,15 @@
   import { computed, reactive, ref } from 'vue';
   // import { useDebounce } from '../../../composables';
 
-  const input = ref<HTMLInputElement | undefined>();
+  const input = ref<HTMLInputElement>();
 
   const props = defineProps<{
     id: string;
     label?: string;
     disabled?: string;
     value?: string;
+    type?: string;
+    required?: boolean;
   }>();
 
   const state = reactive({
@@ -28,7 +32,9 @@
     label: computed(() => props.label),
     value: <string | undefined>'',
     disabled: computed(() => props.disabled),
-    customValue: computed(() => props.value)
+    customValue: computed(() => props.value),
+    type: computed(() => props.type || 'text'),
+    required: computed(() => props.required || false),
   });
 
   // TODO: useDebounce is not good here??

@@ -13,8 +13,11 @@ const useAuth = () => {
     const data = ref<AxiosResponse>();
     const error = ref<string>();
 
+    const params = new URLSearchParams();
+    params.append('email', email.replace(' ', '').trim());
+
     try {
-      const response = await axios.post(`${api}/api/auth`, { email: email.replace(' ', '').trim() });
+      const response = await axios.post(`${api}/api/auth`, params);
       data.value = response.data;
     } catch (err) {
       error.value = 'something went wrong....';
