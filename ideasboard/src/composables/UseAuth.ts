@@ -1,16 +1,18 @@
 import { ref } from 'vue';
 import axios, { AxiosResponse } from 'axios';
 
-interface UseAuthReturn {
+type UseAuthReturn = {
   error: string | undefined;
-  data: AxiosResponse | undefined;
+  data: AuthResponse | undefined;
 }
+
+type AuthResponse = AxiosResponse & { token: string };
 
 const useAuth = () => {
   const api = import.meta.env.VITE_API;
 
   const doAuth = async (email: string): Promise<UseAuthReturn> => {
-    const data = ref<AxiosResponse>();
+    const data = ref<AuthResponse>();
     const error = ref<string>();
 
     const params = new URLSearchParams();
@@ -27,7 +29,7 @@ const useAuth = () => {
   };
 
   const doTokenAuth = async (token: string): Promise<UseAuthReturn> => {
-    const data = ref<AxiosResponse>();
+    const data = ref<AuthResponse>();
     const error = ref<string>();
 
     try {

@@ -40,7 +40,7 @@
     } else {
       if ( typeof token !== 'string' ) throw new Error('The token has to be of type string.');
 
-      const { error, data }: any = await doTokenAuth(<string>token);
+      const { error, data } = await doTokenAuth(<string>token);
       state.isAuthing = false;
 
       if ( error !== undefined ) {
