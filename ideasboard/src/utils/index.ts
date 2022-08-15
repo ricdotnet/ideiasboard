@@ -7,6 +7,7 @@ export function wrap(value: RefValue): Ref {
   return ref<RefValue>(value);
 }
 
-export function unwrap<T extends RefValue>(ref: Ref | T): T {
+export function unwrap<T extends RefValue>(ref: Ref | T | undefined): T | null {
+  if (typeof ref === undefined) return null;
   return (isRef(ref)) ? ref.value : ref;
 }

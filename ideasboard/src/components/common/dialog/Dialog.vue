@@ -56,10 +56,10 @@
   });
 
   const props = defineProps<{
-    isActioning: boolean;
-    isOpen: boolean;
     title: string;
-    submitLabel: string;
+    isOpen: boolean;
+    submitLabel?: string;
+    isActioning?: boolean;
     showActions?: boolean;
     formId?: string;
   }>();

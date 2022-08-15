@@ -11,7 +11,8 @@ type AuthResponse = AxiosResponse & { token: string };
 const useAuth = () => {
   const api = import.meta.env.VITE_API;
 
-  const doAuth = async (email: string): Promise<UseAuthReturn> => {
+  // authenticate user via email
+  const emailAuth = async (email: string): Promise<UseAuthReturn> => {
     const data = ref<AuthResponse>();
     const error = ref<string>();
 
@@ -28,7 +29,8 @@ const useAuth = () => {
     return { error: error.value, data: data.value };
   };
 
-  const doTokenAuth = async (token: string): Promise<UseAuthReturn> => {
+  // authenticate user via link sent to email
+  const tokenAuth = async (token: string): Promise<UseAuthReturn> => {
     const data = ref<AuthResponse>();
     const error = ref<string>();
 
@@ -42,9 +44,32 @@ const useAuth = () => {
     return { error: error.value, data: data.value };
   };
 
+  // TODO: refactor this bit
+  // authenticate current logged-in user
+  const authenticate = async (token: string): Promise<any> => {
+    let data: any = null;
+    let error: any = null;
+
+    try {
+      const response: any = await axios.post(`${api}/api/auth/verify`, {}, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      data = response.data;
+    } catch (err) {
+      error = err;
+    }
+
+    return {
+      error, data
+    };
+  };
+
   return {
-    doAuth,
-    doTokenAuth
+    emailAuth,
+    tokenAuth,
+    authenticate,
   };
 };
 

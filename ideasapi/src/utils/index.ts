@@ -5,10 +5,10 @@ export function randomId(size: number = 20) {
   return crypto.randomBytes(size).toString('hex');
 }
 
-export function createToken(email: string): string {
+export function createToken(email: string, expiresIn?: string): string {
   const token = sign({ email }, <string>process.env.SECRET, {
     algorithm: 'HS256',
-    expiresIn: '15m'
+    expiresIn: expiresIn ?? '365d'
   });
 
   return token;

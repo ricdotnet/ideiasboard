@@ -1,5 +1,5 @@
 <template>
-  <Dialog title="Login with OTP"
+  <Dialog title="Login with Email"
           :show-actions="true"
           :is-open="state.isSignInOpen"
           :is-actioning="state.isSigningIn"
@@ -27,7 +27,7 @@
     getValue: <T>() => T;
   }
 
-  const { doAuth } = useAuth();
+  const { emailAuth } = useAuth();
   const email = ref<IInput>();
 
   const emits = defineEmits<{
@@ -55,7 +55,7 @@
 
     if ( !email.value?.getValue() ) return;
     state.isSigningIn = true;
-    const { error, data } = await doAuth(email.value?.getValue<string>());
+    const { error, data } = await emailAuth(email.value?.getValue<string>());
 
     if ( error !== undefined ) {
       state.isError = true;
@@ -69,7 +69,7 @@
     state.isSigningIn = false;
   }
 
-  defineExpose({ onLoginOpen });
+  defineExpose({ onLoginOpen, onLoginClose });
 </script>
 
 <style scoped lang="scss">

@@ -17,6 +17,7 @@
 
   <LoginDialog ref="loginDialog"
                @on-login-success="onLoginSuccess"/>
+  <LoginActionMessageDialog ref="loginActionMessageDialog"/>
   <CreateBoardDialog ref="createBoardDialog"/>
 </template>
 
@@ -24,20 +25,13 @@
   import { ref } from 'vue';
   import { useRoute } from 'vue-router';
   import { Button } from '../../common';
-  import { CreateBoardDialog, LoginDialog } from '../';
-
-  // TODO: Extract types / interfaces
-  interface ICreateBoardDialog {
-    onCreateBoardOpen: () => void;
-  }
-
-  interface ILoginDialog {
-    onLoginOpen: () => void;
-  }
+  import { CreateBoardDialog, LoginActionMessageDialog, LoginDialog } from '../';
+  import { ICreateBoardDialog, ILoginActionMessageDialog, ILoginDialog } from '../../../types';
 
   const route = useRoute();
   const createBoardDialog = ref<ICreateBoardDialog>();
   const loginDialog = ref<ILoginDialog>();
+  const loginActionMessageDialog = ref<ILoginActionMessageDialog>();
 
   function isInBoard(): boolean {
     return route.path.includes('/board/');
@@ -52,7 +46,8 @@
   }
 
   function onLoginSuccess() {
-    console.log('hello world');
+    loginDialog.value?.onLoginClose();
+    return loginActionMessageDialog.value?.onLoginActionMessageDialogOpen();
   }
 </script>
 

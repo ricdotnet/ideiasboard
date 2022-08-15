@@ -30,7 +30,7 @@
 
   const router = useRouter();
   const { token } = useRoute().query;
-  const { doTokenAuth } = useAuth();
+  const { tokenAuth } = useAuth();
   const { store } = useLocalStorage();
 
   async function authenticate() {
@@ -40,7 +40,7 @@
     } else {
       if ( typeof token !== 'string' ) throw new Error('The token has to be of type string.');
 
-      const { error, data } = await doTokenAuth(<string>token);
+      const { error, data } = await tokenAuth(<string>token);
       state.isAuthing = false;
 
       if ( error !== undefined ) {
@@ -49,8 +49,6 @@
 
       if ( data !== undefined ) {
         state.isSuccess = true;
-        // // @ts-ignore
-        // state.accessToken = data.token;
         store('token', ref(data.token));
         return setTimeout(() => router.push('/'), 3000);
       }
