@@ -13,12 +13,13 @@
 <script setup lang="ts">
   import { onBeforeMount, reactive } from 'vue';
   import { Nav } from './components/blocks';
-  import { useAuth, useLocalStorage } from './composables';
+  import { useAuth, useBoard, useLocalStorage } from './composables';
   import { unwrap } from './utils';
   import { useUserStore } from './stores';
 
   const { value, remove } = useLocalStorage();
   const { authenticate } = useAuth();
+  const { getAllBoards } = useBoard();
   const userStore = useUserStore();
 
   const state = reactive({
@@ -43,6 +44,7 @@
         email: data.email
       });
       state.loading = false;
+      getAllBoards();
     }
   });
 </script>

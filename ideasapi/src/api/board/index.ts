@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import { DAO } from '../../db/DAO';
+import { authenticate } from '../../middlewares';
 
 const board: Router = Router();
 
@@ -14,6 +15,16 @@ board.post('/', (req, res) => {
   });
 
   res.status(200).send();
+});
+
+board.post('/all', authenticate, async (req, res) => {
+
+  res.status(200).send({
+    boards: {
+      owned: ['board1', 'board2', 'board3'],
+      other: ['board10', 'board11', 'board12'],
+    },
+  });
 });
 
 board.get('/:key', async (req, res) => {

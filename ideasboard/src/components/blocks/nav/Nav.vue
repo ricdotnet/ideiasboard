@@ -8,7 +8,7 @@
           <a href="javascript:;" @click="onLoginClick()">Login</a>
         </template>
         <template v-else>
-          <a href="#">My Boards</a>
+          <router-link to="/boards">My Boards</router-link>
           <a href="javascript:;" @click="logout()">Logout</a>
         </template>
         <Button v-if="!isInBoard()"
