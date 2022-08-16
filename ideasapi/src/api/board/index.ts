@@ -6,10 +6,10 @@ const board: Router = Router();
 board.post('/', (req, res) => {
   const { name, key, email } = req.body;
 
-  DAO.client().run('INSERT INTO boards (name, key, owner, created_at) VALUES ($name, $key, $owner, $createdAt)', {
+  DAO.client().run('INSERT INTO boards (name, key, user, created_at) VALUES ($name, $key, $user, $createdAt)', {
     $name: name,
     $key: key,
-    $owner: email ?? null,
+    $user: email ?? null,
     $createdAt: Date.now(),
   });
 
