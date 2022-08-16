@@ -40,7 +40,7 @@
   import { useRoute } from 'vue-router';
   import { Button, Input, Loading } from '../components/common';
   import { IdeiaItem, ShareableLink, BoardNotFound } from '../components/blocks';
-  import { useSubscriptionStore } from '../stores/SubscriptionStore';
+  import { useSubscriptionStore } from '../stores';
   import axios from 'axios';
 
   interface IInput {

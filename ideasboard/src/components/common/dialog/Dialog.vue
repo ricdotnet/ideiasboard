@@ -17,14 +17,15 @@
               <Button label="Cancel"
                       color="plain"
                       text="red"
-                      @click="onClickDialogClose()"
-                      :disabled="state.isActioning">
+                      :disabled="state.isActioning"
+                      @click="onClickDialogClose()">
               </Button>
-              <Button label="Create"
+              <Button :label="state.submitLabel"
                       color="plain"
                       text="blue"
-                      @click="onClickDialogSubmit()"
-                      :disabled="state.isActioning">
+                      :disabled="state.isActioning"
+                      :form="state.formId"
+                      @click="onClickDialogSubmit()">
                 <Loading :is-loading="state.isActioning"/>
               </Button>
             </div>
@@ -55,10 +56,12 @@
   });
 
   const props = defineProps<{
-    showActions?: boolean;
-    isActioning: boolean;
-    isOpen: boolean;
     title: string;
+    isOpen: boolean;
+    submitLabel?: string;
+    isActioning?: boolean;
+    showActions?: boolean;
+    formId?: string;
   }>();
 
   const emits = defineEmits<{
@@ -71,6 +74,8 @@
     isActioning: computed(() => props.isActioning),
     isOpen: computed(() => props.isOpen),
     title: props.title || 'Dialog',
+    submitLabel: computed(() => props.submitLabel),
+    formId: computed(() => props.formId || null),
   });
 
   function onClickDialogSubmit() {

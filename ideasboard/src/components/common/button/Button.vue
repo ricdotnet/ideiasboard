@@ -1,5 +1,5 @@
 <template>
-  <button class="button" :class="`${state.color} ${state.text}`">
+  <button class="button" :class="`${state.color} ${state.text}`" :form="state.form">
     <div>{{ state.label }}</div>
     <slot/>
   </button>
@@ -9,15 +9,17 @@
   import { computed, reactive } from 'vue';
 
   const props = defineProps<{
-    label: string;
-    color: 'plain' | 'slate' | 'sky' | 'red' | 'green';
-    text: 'blue' | 'black' | 'white' | 'red';
+    label?: string;
+    color?: 'plain' | 'slate' | 'sky' | 'red' | 'green';
+    text?: 'blue' | 'black' | 'white' | 'red';
+    form?: string;
   }>();
 
   const state = reactive({
     label: computed(() => props.label),
     color: computed(() => 'b-' + props.color),
     text: computed(() => 't-' + props.text),
+    form: computed(() => props.form),
   });
 
   defineExpose({ state });
@@ -52,12 +54,15 @@
     &.t-blue {
       @apply text-blue-600;
     }
+
     &.t-black {
       @apply text-black;
     }
+
     &.t-white {
       @apply text-white;
     }
+
     &.t-red {
       @apply text-red-600;
     }
