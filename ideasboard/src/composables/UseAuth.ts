@@ -1,5 +1,6 @@
 import { ref } from 'vue';
 import axios, { AxiosResponse } from 'axios';
+import { useLocalStorage } from './UseLocalStorage';
 
 type UseAuthReturn = {
   error: string | undefined;
@@ -10,6 +11,7 @@ type AuthResponse = AxiosResponse & { token: string };
 
 const useAuth = () => {
   const api = import.meta.env.VITE_API;
+  const { remove } = useLocalStorage();
 
   // authenticate user via email
   const emailAuth = async (email: string): Promise<UseAuthReturn> => {
@@ -66,10 +68,16 @@ const useAuth = () => {
     };
   };
 
+  const logout = () => {
+    remove('token');
+    return window.location.href = '/';
+  };
+
   return {
     emailAuth,
     tokenAuth,
     authenticate,
+    logout,
   };
 };
 

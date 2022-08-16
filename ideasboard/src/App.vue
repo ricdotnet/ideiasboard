@@ -15,9 +15,11 @@
   import { Nav } from './components/blocks';
   import { useAuth, useLocalStorage } from './composables';
   import { unwrap } from './utils';
+  import { useUserStore } from './stores';
 
-  const { value } = useLocalStorage();
+  const { value, remove } = useLocalStorage();
   const { authenticate } = useAuth();
+  const userStore = useUserStore();
 
   const state = reactive({
     loading: true,
@@ -32,10 +34,14 @@
     const { error, data } = await authenticate(token);
 
     if ( error ) {
-      // reset token, user store and all the logout procedures...
+      remove('token');
+      state.loading = false;
     }
 
     if ( data ) {
+      userStore.$patch({
+        email: data.email
+      });
       state.loading = false;
     }
   });

@@ -47,11 +47,12 @@ function broadcastIdeiaLike({ board, clientId, ideia }: any) {
   });
 }
 
-function insertIdeia({ board, content }: any): Promise<{}> {
+function insertIdeia({ board, content, user }: any): Promise<{}> {
   return new Promise((resolve, reject) => {
-    DAO.client().run('INSERT INTO ideias (board, content, created_at) VALUES ($board, $content, $createdAt)', {
+    DAO.client().run('INSERT INTO ideias (board, content, user, created_at) VALUES ($board, $content, $user, $createdAt)', {
       $board: board,
       $content: content,
+      $user: user ?? null,
       $createdAt: Date.now(),
     }, function (error) {
       if (error) console.log(error);

@@ -50,7 +50,7 @@
       if ( data !== undefined ) {
         state.isSuccess = true;
         store('token', ref(data.token));
-        return setTimeout(() => router.push('/'), 3000);
+        return setTimeout(() => window.location.href = '/', 3000);
       }
 
       // for now if there is no error or data just fail
