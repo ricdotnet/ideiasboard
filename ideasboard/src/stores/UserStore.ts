@@ -1,10 +1,10 @@
 import { defineStore } from 'pinia';
-import { Board } from '../types';
+import { IUserBoards } from '../types';
 
 const useUserStore = defineStore('user', {
   state: () => ({
     email: <string>'',
-    boards: <Board[]>[],
+    boards: <IUserBoards>{},
   }),
 });
 

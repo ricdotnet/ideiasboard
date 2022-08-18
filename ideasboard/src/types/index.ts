@@ -15,3 +15,8 @@ export interface ILoginDialog {
 export interface ILoginActionMessageDialog {
   onLoginActionMessageDialogOpen: () => void;
 }
+
+export interface IUserBoards {
+  owned: [];
+  other: [];
+}

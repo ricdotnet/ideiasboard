@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import { useLocalStorage } from './UseLocalStorage';
 import { useUserStore } from '../stores';
 
@@ -17,7 +17,7 @@ export const useBoard = () => {
     const params = new URLSearchParams();
     params.append('email', email);
 
-    const response: any = await axios.post(`${api}/api/board/all`, params, {
+    const response: AxiosResponse = await axios.post(`${api}/api/board/all`, params, {
       headers: {
         'Authorization': `Bearer ${value('token')?.value}`,
       }
