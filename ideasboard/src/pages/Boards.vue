@@ -6,14 +6,14 @@
     You have not created or interacted with any board.
   </template>
   <template v-else>
-    <div>
+    <div class="list">
       My Boards
       <div v-for="({key, name}, index) in state.boards.owned" :key="index">
         <router-link :to="'/board/' + key">{{ key }}</router-link>
         :: {{ name }}
       </div>
     </div>
-    <div>
+    <div class="list">
       Other Boards
       <div v-for="({board, name}, index) in state.boards.other" :key="index">
         <router-link :to="'/board/' + board">{{ board }}</router-link>
@@ -51,4 +51,9 @@
 </script>
 
 <style scoped lang="scss">
+  .list {
+    &:last-of-type {
+      @apply mt-10;
+    }
+  }
 </style>

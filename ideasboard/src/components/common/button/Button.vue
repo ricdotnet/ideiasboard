@@ -31,6 +31,10 @@
   .button {
     @apply px-5 py-2 font-bold rounded-md fast text-white outline-none flex space-x-1 items-center;
 
+    &:focus-visible {
+      @apply outline outline-black;
+    }
+
     &.b-plain {
       @apply hover:bg-gray-200 active:bg-gray-100;
     }
