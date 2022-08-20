@@ -1,8 +1,8 @@
 <template>
   <div class="nav">
     <div class="nav__container">
-      <div class="nav__logo">IdeiasBoard</div>
-      <div class="nav__links">
+      <div class="nav__container-logo">IdeiasBoard</div>
+      <div class="nav__container-links">
         <router-link to="/">Home</router-link>
         <template v-if="!userStore.email">
           <a href="javascript:;" @click="onLoginClick()">Login</a>
@@ -65,18 +65,18 @@
   @import "../../../assets/defaults";
 
   .nav {
-    @apply h-16 w-full;
+    @apply h-16 w-full flex items-center mb-10 border-b shadow-md;
 
     &__container {
       @apply container flex items-center justify-between;
-    }
 
-    &__logo {
-      @apply text-2xl font-extrabold tracking-wide;
-    }
+      &-logo {
+        @apply text-2xl font-extrabold tracking-wide;
+      }
 
-    &__links {
-      @apply flex items-center space-x-4;
+      &-links {
+        @apply flex items-center space-x-4;
+      }
     }
   }
 </style>

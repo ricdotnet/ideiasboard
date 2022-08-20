@@ -1,10 +1,10 @@
 <template>
-  <div class="mt-16">
-    <div class="text-lg pl-3">Share this link with your team and start brainstorming.</div>
-    <div class="flex items-center space-x-2">
-      <Input class="w-full" id="link" disabled="true" :value="state.link"/>
-      <IconButton color="plain">
-        <ClipboardCopyIcon class="w-5" @click="copyLinkToClipboard()"/>
+  <div class="shareable-container">
+    <div class="shareable-container__description">Share this link with your team and start brainstorming.</div>
+    <div class="shareable-container__link">
+      <Input class="shareable-container__link-input" id="link" disabled="true" :value="state.link"/>
+      <IconButton color="plain" @click="copyLinkToClipboard()">
+        <ClipboardCopyIcon class="shareable-container__link-icon"/>
       </IconButton>
     </div>
   </div>
@@ -24,9 +24,29 @@
   });
 
   function copyLinkToClipboard() {
+    console.log('copied.');
     return navigator.clipboard.writeText(state.link);
   }
 </script>
 
 <style scoped lang="scss">
+  .shareable-container {
+    @apply my-16;
+
+    &__description {
+      @apply text-lg pl-3;
+    }
+
+    &__link {
+      @apply flex items-center space-x-2;
+
+      &-input {
+        @apply w-full;
+      }
+
+      &-icon {
+        @apply w-5;
+      }
+    }
+  }
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <Transition name="dialog">
+  <TransitionSlot name="dialog" type="single">
     <template v-if="state.isOpen">
       <div class="dialog-full">
         <div class="dialog-full__box dialog">
@@ -33,13 +33,13 @@
         </div>
       </div>
     </template>
-  </Transition>
+  </TransitionSlot>
 </template>
 
 <script setup lang="ts">
   import { computed, onBeforeMount, onBeforeUnmount, reactive } from 'vue';
   import { XIcon } from '@heroicons/vue/solid';
-  import { Button, IconButton, Loading } from '../';
+  import { Button, IconButton, Loading, TransitionSlot } from '../';
 
   onBeforeMount(() => {
     window.addEventListener('keydown', (e: KeyboardEvent) => {
@@ -132,22 +132,22 @@
   // === background transition === //
   .dialog-enter-active,
   .dialog-leave-active {
-    @apply transition duration-300 ease-in-out;
+    @extend .fade-enter-active, .fade-leave-active;
   }
 
   .dialog-enter-from,
   .dialog-leave-to {
-    @apply opacity-0;
+    @extend .fade-enter-from, .fade-leave-to;
   }
 
   // === dialog transition === //
   .dialog-enter-active .dialog,
   .dialog-leave-active .dialog {
-    @apply transition duration-300 ease-in-out;
+    @extend .fadeInDown-enter-active, .fadeInDown-leave-active;
   }
 
   .dialog-enter-from .dialog,
   .dialog-leave-to .dialog {
-    @apply -translate-y-40;
+    @extend .fadeInDown-enter-from, .fadeInDown-leave-to;
   }
 </style>
