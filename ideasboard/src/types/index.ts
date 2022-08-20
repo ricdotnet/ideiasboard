@@ -16,7 +16,13 @@ export interface ILoginActionMessageDialog {
   onLoginActionMessageDialogOpen: () => void;
 }
 
+export interface IListBoard {
+  key: string;
+  name: string;
+  ideias: number;
+}
+
 export interface IUserBoards {
-  owned: [];
-  other: [];
+  owned: IListBoard[];
+  other: IListBoard[];
 }

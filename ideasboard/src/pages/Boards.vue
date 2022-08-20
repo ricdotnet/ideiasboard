@@ -8,16 +8,16 @@
   <template v-else>
     <div class="list">
       My Boards
-      <div v-for="({key, name}, index) in state.boards.owned" :key="index">
+      <div v-for="({key, name, ideias}, index) in state.boards.owned" :key="index">
         <router-link :to="'/board/' + key">{{ key }}</router-link>
-        :: {{ name }}
+        :: {{ name }} :: {{ ideias }}
       </div>
     </div>
     <div class="list">
       Other Boards
-      <div v-for="({board, name}, index) in state.boards.other" :key="index">
-        <router-link :to="'/board/' + board">{{ board }}</router-link>
-        :: {{ name }}
+      <div v-for="({key, name, ideias}, index) in state.boards.other" :key="index">
+        <router-link :to="'/board/' + key">{{ key }}</router-link>
+        :: {{ name }} :: {{ ideias }}
       </div>
     </div>
   </template>
