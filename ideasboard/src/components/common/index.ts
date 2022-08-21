@@ -7,3 +7,5 @@ export { default as Input } from './form/Input.vue';
 export { default as ErrorMessage } from './typography/ErrorMessage.vue';
 
 export { default as Loading } from './loading/Loading.vue';
+
+export { default as TransitionSlot } from './transition/TransitionSlot.vue';

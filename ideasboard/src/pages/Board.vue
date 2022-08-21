@@ -1,7 +1,7 @@
 <template>
   <template v-if="state.loading">Loading ...</template>
   <template v-else-if="!state.loading && !state.board">
-    <BoardNotFound />
+    <BoardNotFound/>
   </template>
   <template v-else>
     <div class="flex items-center space-x-2">
@@ -17,9 +17,9 @@
     <div class="mb-5">
       {{ state.board.name }}
     </div>
-    <div v-if="!state.ideias.length">No ideias on this board yet.</div>
-    <div class="grid grid-cols-2 xl:grid-cols-3 gap-2">
-      <TransitionGroup name="ideia">
+    <template v-if="!state.ideias.length">No ideias on this board yet.</template>
+    <div class="grid grid-cols-2 laptop:grid-cols-4 wide:grid-cols-5 gap-2">
+      <TransitionSlot type="group" name="bounce">
         <div v-for="(ideia, index) of state.ideias" :key="index">
           <IdeiaItem :ideia="ideia"
                      :board="state.board.key"
@@ -27,7 +27,7 @@
                      @on-liked="sortIdeias()"
           />
         </div>
-      </TransitionGroup>
+      </TransitionSlot>
     </div>
 
     <ShareableLink :link="resolveShareableLink()"/>
@@ -38,8 +38,8 @@
 <script setup lang="ts">
   import { inject, onBeforeMount, onUnmounted, reactive, ref } from 'vue';
   import { useRoute } from 'vue-router';
-  import { Button, Input, Loading } from '../components/common';
-  import { IdeiaItem, ShareableLink, BoardNotFound } from '../components/blocks';
+  import { Button, Input, Loading, TransitionSlot } from '../components/common';
+  import { BoardNotFound, IdeiaItem, ShareableLink } from '../components/blocks';
   import { useSubscriptionStore } from '../stores';
   import axios from 'axios';
 
@@ -125,13 +125,4 @@
 </script>
 
 <style lang="scss" scoped>
-  .ideia-enter-active,
-  .ideia-leave-active {
-    transition: transform 0.3s cubic-bezier(0, 1.82, .71, .76);
-  }
-
-  .ideia-enter-from,
-  .ideia-leave-to {
-    @apply scale-0;
-  }
 </style>
