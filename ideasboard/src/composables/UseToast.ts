@@ -2,7 +2,7 @@ import { Ref, ref, UnwrapRef } from 'vue';
 import { unwrap } from '../utils';
 
 type Toasts = Ref<UnwrapRef<IToast[]>>
-type ToastType = string & 'success' | 'error' | 'warning';
+type ToastType = 'success' | 'error' | 'warning';
 
 export interface IToast {
   type: ToastType;
