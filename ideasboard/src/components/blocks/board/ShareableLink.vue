@@ -1,6 +1,8 @@
 <template>
   <div class="shareable-container">
-    <div class="shareable-container__description">Share this link with your team and start brainstorming.</div>
+    <div class="shareable-container__description">Share this link with your team and start
+      brainstorming.
+    </div>
     <div class="shareable-container__link">
       <Input class="shareable-container__link-input" id="link" disabled="true" :value="state.link"/>
       <IconButton color="plain" @click="copyLinkToClipboard()">
@@ -12,8 +14,11 @@
 
 <script setup lang="ts">
   import { reactive } from 'vue';
+  import { useToast } from '../../../composables';
   import { IconButton, Input } from '../../common';
   import { ClipboardCopyIcon } from '@heroicons/vue/solid';
+
+  const { addToast } = useToast();
 
   const props = defineProps<{
     link: string;
@@ -24,7 +29,7 @@
   });
 
   function copyLinkToClipboard() {
-    console.log('copied.');
+    addToast('success', 'Link copied to your clipboard.');
     return navigator.clipboard.writeText(state.link);
   }
 </script>

@@ -3,6 +3,7 @@
     Loading...
   </template>
   <template v-else>
+    <ToastList/>
     <Nav></Nav>
     <div class="container">
       <router-view></router-view>
@@ -12,7 +13,7 @@
 
 <script setup lang="ts">
   import { onBeforeMount, reactive } from 'vue';
-  import { Nav } from './components/blocks';
+  import { Nav, ToastList } from './components/blocks';
   import { useAuth, useLocalStorage } from './composables';
   import { unwrap } from './utils';
   import { useUserStore } from './stores';
@@ -46,5 +47,3 @@
     }
   });
 </script>
-<style lang="scss">
-</style>

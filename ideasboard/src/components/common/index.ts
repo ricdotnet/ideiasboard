@@ -8,4 +8,4 @@ export { default as ErrorMessage } from './typography/ErrorMessage.vue';
 
 export { default as Loading } from './loading/Loading.vue';
 
-export { default as TransitionSlot } from './TransitionSlot.vue';
+export { default as TransitionSlot } from './transition/TransitionSlot.vue';
