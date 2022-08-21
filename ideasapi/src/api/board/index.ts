@@ -20,6 +20,10 @@ board.post('/', (req, res) => {
 
 board.post('/all', authenticate, async (req, res) => {
 
+  if ( !req.body.email ) {
+    return res.status(401).send({ status: 401, error: 'Invalid email address.' });
+  }
+
   const boards = await getUserBoards(req.body);
 
   res.status(200).send({ boards });

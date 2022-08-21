@@ -36,10 +36,14 @@ auth.post('/verify', (req, res) => {
   try {
     payload = verifyToken(token);
     if ( !payload.hasOwnProperty('email') ) {
-      return res.status(401).send({ error: 'could not auth', message: 'payload has no email' });
+      return res.status(401).send({
+        status: 401,
+        error: 'could not auth',
+        message: 'payload has no email'
+      });
     }
   } catch (error) {
-    return res.status(401).send({ error, message: 'generic error' });
+    return res.status(401).send({ status: 401, error, message: 'generic error' });
   }
 
   res.status(200).send({ message: 'authed', email: payload['email'] });
