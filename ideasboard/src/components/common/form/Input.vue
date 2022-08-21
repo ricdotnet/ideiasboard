@@ -59,6 +59,11 @@
 
 <style scoped lang="scss">
   .input {
+
+    &:focus-visible {
+      @apply outline outline-black;
+    }
+
     @apply px-5 py-2 border border-gray-300 w-full outline-none rounded-md;
   }
 

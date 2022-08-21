@@ -1,5 +1,7 @@
 import { Router } from 'express';
 import { DAO } from '../../db/DAO';
+import { authenticate } from '../../middlewares';
+import { getUserBoards } from '../../services/BoardService';
 
 const board: Router = Router();
 
@@ -14,6 +16,17 @@ board.post('/', (req, res) => {
   });
 
   res.status(200).send();
+});
+
+board.post('/all', authenticate, async (req, res) => {
+
+  if ( !req.body.email ) {
+    return res.status(401).send({ status: 401, error: 'Invalid email address.' });
+  }
+
+  const boards = await getUserBoards(req.body);
+
+  res.status(200).send({ boards });
 });
 
 board.get('/:key', async (req, res) => {
