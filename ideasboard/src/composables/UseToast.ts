@@ -1,14 +1,6 @@
-import { Ref, ref, UnwrapRef } from 'vue';
+import { ref } from 'vue';
 import { unwrap } from '../utils';
-
-type Toasts = Ref<UnwrapRef<IToast[]>>
-type ToastType = 'success' | 'error' | 'warning';
-
-export interface IToast {
-  type: ToastType;
-  content: string;
-  id: number;
-}
+import { IToast, Toasts, ToastType } from '../types';
 
 const toasts: Toasts = ref([]);
 let interval: NodeJS.Timer | undefined;
