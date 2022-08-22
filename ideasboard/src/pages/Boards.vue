@@ -8,16 +8,16 @@
   <template v-else>
     <div class="list">
       My Boards
-      <div v-for="({key, name, ideias}, index) in state.boards.owned" :key="index">
+      <div v-for="({key, name, ideias, created_at}, index) in state.boards.owned" :key="index">
         <router-link :to="'/board/' + key">{{ key }}</router-link>
-        :: {{ name }} :: {{ ideias }}
+        :: {{ name }} :: {{ ideias }} :: {{ new Date(created_at).toDateString() }}
       </div>
     </div>
     <div class="list">
       Other Boards
-      <div v-for="({key, name, ideias}, index) in state.boards.other" :key="index">
+      <div v-for="({key, name, ideias, created_at}, index) in state.boards.other" :key="index">
         <router-link :to="'/board/' + key">{{ key }}</router-link>
-        :: {{ name }} :: {{ ideias }}
+        :: {{ name }} :: {{ ideias }} :: {{ new Date(created_at).toDateString() }}
       </div>
     </div>
   </template>
@@ -46,8 +46,6 @@
     await getAllBoards();
     state.loading = false;
   });
-
-  defineExpose({ state });
 </script>
 
 <style scoped lang="scss">

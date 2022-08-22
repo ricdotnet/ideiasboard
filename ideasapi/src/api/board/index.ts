@@ -42,7 +42,9 @@ board.get('/:key', async (req, res) => {
   if ( !result ) return res.status(404).send({ status: 404, error: 'Board not found.' });
 
   const board = result[0];
-  Object.assign(board, { ideias: result[1] });
+
+  // small hack to clean the ideias if id of 0 is null
+  Object.assign(board, { ideias: (result[1][0].id === null) ? [] : result[1] });
 
   res.status(200).send({ board });
 });
