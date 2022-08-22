@@ -47,26 +47,4 @@ board.get('/:key', async (req, res) => {
   res.status(200).send({ board });
 });
 
-function getBoardData(key: string) {
-  return new Promise((resolve, reject) => {
-    DAO.client().get('SELECT * FROM boards WHERE key = $key', {
-      $key: key
-    }, (error, result) => {
-      if ( error ) return reject(error);
-      resolve(result);
-    });
-  });
-}
-
-function getBoardIdeias(key: string) {
-  return new Promise((resolve, reject) => {
-    DAO.client().all('SELECT * FROM ideias WHERE board = $key', {
-      $key: key,
-    }, (error, result) => {
-      if ( error ) return reject(error);
-      resolve(result);
-    });
-  });
-}
-
 export { board };
