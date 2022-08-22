@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { DAO } from '../../db/DAO';
 import { authenticate } from '../../middlewares';
-import { getUserBoards } from '../../services/BoardService';
+import { fetchBoard, getUserBoards } from '../../services/BoardService';
 
 const board: Router = Router();
 
@@ -31,17 +31,20 @@ board.post('/all', authenticate, async (req, res) => {
 
 board.get('/:key', async (req, res) => {
   const { key } = req.params;
-  let boardData, ideias;
+  let result;
   try {
-    boardData = await getBoardData(key);
-    ideias = await getBoardIdeias(key);
+    result = await fetchBoard(key);
+    // ideias = await getBoardIdeias(key);
   } catch (error) {
     if ( error ) return res.status(400).send({ status: 400, error });
   }
 
-  if ( !boardData ) return res.status(404).send({ status: 404, error: 'Board not found.' });
+  if ( !result ) return res.status(404).send({ status: 404, error: 'Board not found.' });
 
-  res.status(200).send({ boardData, ideias });
+  const board = result[0];
+  Object.assign(board, { ideias: result[1] });
+
+  res.status(200).send({ board });
 });
 
 function getBoardData(key: string) {

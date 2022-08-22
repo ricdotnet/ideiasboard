@@ -64,8 +64,8 @@
   onBeforeMount(async () => {
     axios.get(`${api}/api/board/${params['key']}`)
       .then(({ data }) => {
-        state.board = data.boardData;
-        state.ideias = data.ideias.sort((a: any, b: any) => b.likes - a.likes);
+        state.board = data.board;
+        state.ideias = data.board.ideias.sort((a: any, b: any) => b.likes - a.likes);
         sub.subscribe(params['key']);
         sub.getSub.addEventListener('ES_IDEIA', (e: any) => {
           addNote(JSON.parse(e.data));

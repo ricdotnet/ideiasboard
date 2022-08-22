@@ -5,7 +5,7 @@
   "license": "MIT",
   "scripts": {
     "start": "NODE_ENV=production node ./dist/src",
-    "dev": "ts-node ./src/index.ts",
+    "dev": "ts-node-dev --respawn ./src/index.ts",
     "build": "rm -r ./dist && tsc"
   },
   "devDependencies": {
@@ -16,6 +16,7 @@
     "@types/sqlite3": "^3.1.8",
     "gulp": "^4.0.2",
     "ts-node": "^10.8.2",
+    "ts-node-dev": "^2.0.0",
     "typescript": "^4.7.4"
   },
   "dependencies": {
