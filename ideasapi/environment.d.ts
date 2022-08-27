@@ -8,7 +8,6 @@ declare global {
       MAILJET_API_SECRET: string;
       MAILJET_API_KEY: string;
       MAILJET_API_EMAIL: string;
-      LOGIN_TEMPLATE: number; // temp
     }
   }
 }

@@ -1,11 +1,9 @@
 import { Router } from 'express';
 import { createToken, isValidEmail, verifyToken } from '../../utils';
-import { sendEmail } from '../../services/EmailService';
+import { sendLoginLink } from '../../email/transactions';
 import config from '../../config';
 
 const auth: Router = Router();
-
-// TODO: get rid of the 'any' type and maybe refactor into cool service functions
 
 auth.post('/', async (req, res) => {
   if ( !isValidEmail(req.body.email) ) {
@@ -15,15 +13,12 @@ auth.post('/', async (req, res) => {
   const token = createToken(req.body.email, '15m');
 
   try {
-    await sendEmail({
-      email: req.body.email,
-      name: 'Some Name',
-      loginLink: `${config.BASE}/auth?token=${token}`,
-    });
+    await sendLoginLink(req.body.email, `${config.BASE}/auth?token=${token}`);
   } catch (error: any) {
     return res.status(400).send({ error: error.ErrorMessage });
   }
 
+  console.log('Login link sent to:', req.body.email);
   res.status(200).send({ status: 200, message: 'email sent' });
 });
 
