@@ -1,8 +1,11 @@
 import { DAO } from '../db/DAO';
 import { IBoard, IIdeia } from '../models/board';
 import { ObjectBuilder } from '../models/ObjectBuilder';
+import { Logger } from '../utils/Logger';
 
 export async function getUserBoards({ email }: any): Promise<{ owned: IBoard[]; other: IBoard[]; }> {
+  await Logger.info('Retrieving boards for user:', { user: email });
+
   const result: { owned: IBoard[]; other: IBoard[]; } = {
     owned: <IBoard[]>[],
     other: <IBoard[]>[],
@@ -15,7 +18,9 @@ export async function getUserBoards({ email }: any): Promise<{ owned: IBoard[]; 
 }
 
 export function fetchBoard(key: string): Promise<any> {
-  return new Promise((resolve, reject) => {
+  return new Promise(async (resolve, reject) => {
+    await Logger.info('Retrieving board data:', { board: key });
+
     DAO.client().get(`
         SELECT boards.key,
                boards.name,

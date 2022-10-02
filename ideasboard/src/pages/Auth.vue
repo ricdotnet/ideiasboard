@@ -28,7 +28,6 @@
     accessToken: '',
   });
 
-  const router = useRouter();
   const { token } = useRoute().query;
   const { tokenAuth } = useAuth();
   const { store } = useLocalStorage();

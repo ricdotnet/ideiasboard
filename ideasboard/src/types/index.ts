@@ -1,8 +1,21 @@
 import { Ref, UnwrapRef } from 'vue';
 
-export type Board = {
-  title: string;
-  ideas: any[];
+export interface IBoard {
+  name: string;
+  ideias: IIdea[];
+}
+
+export interface IIdea {
+  id: number;
+  content: string;
+  likes: number;
+}
+
+export interface IBoardPageState {
+  loading: boolean;
+  board: IBoard;
+  ideias: IIdea[];
+  isAddingIdeia: boolean;
 }
 
 export interface ICreateBoardDialog {

@@ -1,11 +1,17 @@
 import { defineStore } from 'pinia';
 import axios from 'axios';
 
+interface IState {
+  eventSource: EventSource | null;
+  clientId: string;
+  api?: string; // because we inject some global state into the store (api and base) we need this
+  base?: string;
+}
+
 const useSubscriptionStore = defineStore('subscription', {
-  state: (): any => ({
+  state: (): IState => ({
     eventSource: null,
-    subscriptions: <any>[],
-    clientId: <string>'',
+    clientId: '',
   }),
   getters: {
     getSub: (state) => state.eventSource,
@@ -16,7 +22,7 @@ const useSubscriptionStore = defineStore('subscription', {
       if ( !this.eventSource ) {
         this.eventSource = new EventSource(`${this.api}/api/realtime`);
 
-        this.eventSource.addEventListener('ES_CONNECT', async (e: any) => {
+        this.eventSource.addEventListener('ES_CONNECT', async (e): Promise<void> => {
           const { clientId } = JSON.parse(e.data);
           this.clientId = clientId;
 
@@ -28,7 +34,7 @@ const useSubscriptionStore = defineStore('subscription', {
       }
     },
     unsub() {
-      this.eventSource.close();
+      this.eventSource?.close();
       this.eventSource = null;
     }
   }

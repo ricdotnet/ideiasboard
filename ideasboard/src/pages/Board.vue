@@ -1,6 +1,6 @@
 <template>
   <template v-if="state.loading">Loading ...</template>
-  <template v-else-if="!state.loading && !state.board">
+  <template v-else-if="!state.loading && !state.board.key">
     <BoardNotFound/>
   </template>
   <template v-else>
@@ -34,14 +34,15 @@
   </template>
 </template>
 
-<!-- TODO: refactor this component... extract logic to services -->
 <script setup lang="ts">
   import { inject, onBeforeMount, onUnmounted, reactive, ref } from 'vue';
   import { useRoute } from 'vue-router';
+  import axios from 'axios';
   import { Button, Input, Loading, TransitionSlot } from '../components/common';
   import { BoardNotFound, IdeiaItem, ShareableLink } from '../components/blocks';
   import { useSubscriptionStore } from '../stores';
-  import axios from 'axios';
+  import { IBoard, IBoardPageState, IIdea } from '../types';
+  import { processBoard } from '../services';
 
   interface IInput {
     getValue: () => void;
@@ -54,41 +55,20 @@
   const sub = useSubscriptionStore();
   const ideia = ref<IInput>();
 
-  const state = reactive({
+  const state = reactive<IBoardPageState>({
     loading: true,
-    board: null,
-    ideias: <any>[],
+    board: {} as IBoard,
+    ideias: [],
     isAddingIdeia: false,
   });
 
   onBeforeMount(async () => {
     axios.get(`${api}/api/board/${params['key']}`)
-      .then(({ data }) => {
-        state.board = data.board;
-        state.ideias = data.board.ideias.sort((a: any, b: any) => b.likes - a.likes);
-        sub.subscribe(params['key']);
-        sub.getSub.addEventListener('ES_IDEIA', (e: any) => {
-          addNote(JSON.parse(e.data));
-        });
-        sub.getSub.addEventListener('ES_IDEIA_LIKE', (e: any) => {
-          const data = JSON.parse(e.data);
-          // todo: maybe refactor this...
-          state.ideias.map((i: any) => {
-            if ( i.id === +data.ideia ) {
-              i.likes++;
-            }
-          });
-          state.ideias.sort((a: any, b: any) => b.likes - a.likes);
-        });
-
-        document.title = `Board: ${state.board.name}`;
-      }).catch(({ response }) => {
-      if ( response.status === 404 ) {
-        console.error(response.data.error);
-      }
-    });
-
-    state.loading = false;
+      .then((response) => processBoard(state, sub, params)(response.data.board))
+      .catch(() => {
+        console.error('Could not fetch board.');
+        state.loading = false;
+      });
   });
 
   onUnmounted(() => {
@@ -103,20 +83,13 @@
       clientId: sub.getClientId,
       content: ideia.value?.getValue(),
     })
-      .then(({ data }) => {
-        // console.log(data);
+      .then(() => {
         ideia.value?.resetValue();
-      }).catch(({ response }) => {
-      // console.error(response.error);
-    });
-  }
-
-  function addNote({ ideia }: any) {
-    state.ideias.push({ id: ideia.id, content: ideia.content, likes: 0 });
+      }).catch(() => console.error('Could not add ideia.'));
   }
 
   function sortIdeias() {
-    state.ideias = state.ideias.sort((a: any, b: any) => b.likes - a.likes);
+    state.ideias = state.ideias.sort((a: IIdea, b: IIdea) => b.likes - a.likes);
   }
 
   function resolveShareableLink(): string {
