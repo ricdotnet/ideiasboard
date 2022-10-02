@@ -1,6 +1,6 @@
 <template>
   <div class="ideia-item">
-    <div>{{ state.ideia.content }}</div>
+    <div class="ideia-item__content scrollbar">{{ state.ideia.content }}</div>
     <div class="ideia-item__bottom">
       <IconButton color="plain" @click="onClickLikeIdeia()">
         <ThumbUpIcon class="w-3"/>
@@ -15,11 +15,12 @@
   import { IconButton } from '../../common';
   import { ThumbUpIcon } from '@heroicons/vue/solid';
   import axios from 'axios';
+  import { IIdea } from '../../../types';
 
   const api = inject('api');
 
   const props = defineProps<{
-    ideia: object;
+    ideia: IIdea;
     board: string;
     clientId: string;
   }>();
@@ -49,10 +50,14 @@
   @import "../../../assets/_defaults.scss";
 
   .ideia-item {
-    @apply border border-gray-300 rounded-md shadow text-sm px-4 py-2;
+    @apply border border-gray-300 rounded-md shadow text-sm overflow-hidden;
+
+    &__content {
+      @apply h-[130px] overflow-y-scroll w-full p-2;
+    }
 
     &__bottom {
-      @apply flex items-center space-x-2 mt-2;
+      @apply flex items-center space-x-2 mt-2 p-2 shadow-top;
     }
   }
 </style>

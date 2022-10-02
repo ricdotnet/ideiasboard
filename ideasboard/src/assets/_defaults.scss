@@ -7,6 +7,25 @@
   @apply w-[480px] tablet:w-[640px] laptop:w-[1024px] desktop:w-[1280px] wide:w-[1500px] mx-auto;
 }
 
+.scrollbar {
+  &::-webkit-scrollbar {
+    width: 5px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    @apply bg-zinc-300;
+    border-radius: 100vh;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    @apply bg-zinc-600;
+  }
+}
+
 // === === === css transitions === === === //
 .super-slow {
   @apply ease-in-out duration-1000;
