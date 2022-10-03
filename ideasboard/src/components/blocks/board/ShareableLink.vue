@@ -36,7 +36,7 @@
 
 <style scoped lang="scss">
   .shareable-container {
-    @apply my-16;
+    @apply p-6 fixed bottom-0 left-0 bg-white w-full;
 
     &__description {
       @apply text-lg pl-3;

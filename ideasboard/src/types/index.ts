@@ -1,6 +1,7 @@
 import { Ref, UnwrapRef } from 'vue';
 
 export interface IBoard {
+  key: string;
   name: string;
   ideias: IIdea[];
 }

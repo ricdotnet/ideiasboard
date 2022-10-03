@@ -1,29 +1,31 @@
 <template>
-  <template v-if="state.loading">Loading ...</template>
-  <template v-else-if="!state.loading && !state.board.key">
-    <BoardNotFound/>
-  </template>
-  <template v-else>
-    <BoardHeader :board="state.board"/>
-    <template v-if="!state.ideias.length">No ideias on this board yet.</template>
-    <div class="grid grid-cols-2 laptop:grid-cols-4 wide:grid-cols-5 gap-2">
-      <TransitionSlot type="group" name="bounce">
-        <div v-for="(ideia, index) of state.ideias" :key="index">
-          <IdeiaItem :ideia="ideia"
-                     :board="state.board.key"
-                     :client-id="sub.getClientId"
-                     @on-liked="sortIdeias()"
-          />
-        </div>
-      </TransitionSlot>
-    </div>
+  <div class="h-auto pb-[118px] mb-10">
+    <template v-if="state.loading">Loading ...</template>
+    <template v-else-if="!state.loading && !state.board.key">
+      <BoardNotFound/>
+    </template>
+    <template v-else>
+      <BoardHeader :board="state.board"/>
+      <template v-if="!state.ideias.length">No ideias on this board yet.</template>
+      <div class="grid grid-cols-2 laptop:grid-cols-4 wide:grid-cols-5 gap-2">
+        <TransitionSlot type="group" name="bounce">
+          <div v-for="(ideia, index) of state.ideias" :key="index">
+            <IdeiaItem :ideia="ideia"
+                       :board="state.board.key"
+                       :client-id="sub.getClientId"
+                       @on-liked="sortIdeias()"
+            />
+          </div>
+        </TransitionSlot>
+      </div>
+    </template>
 
-    <ShareableLink :link="resolveShareableLink()"/>
-  </template>
+    <ShareableLink id="shareable-link" :link="resolveShareableLink()"/>
+  </div>
 </template>
 
 <script setup lang="ts">
-  import { inject, onBeforeMount, onUnmounted, reactive, ref } from 'vue';
+  import { inject, onBeforeMount, onUnmounted, reactive } from 'vue';
   import { useRoute } from 'vue-router';
   import axios from 'axios';
   import { TransitionSlot } from '../components/common';
@@ -32,16 +34,10 @@
   import { IBoard, IBoardPageState, IIdea } from '../types';
   import { processBoard } from '../services';
 
-  interface IInput {
-    getValue: () => void;
-    resetValue: () => void;
-  }
-
   const base = inject('base');
   const api = inject('api');
   const { params } = useRoute();
   const sub = useSubscriptionStore();
-  const ideia = ref<IInput>();
 
   const state = reactive<IBoardPageState>({
     loading: true,
