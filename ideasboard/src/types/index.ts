@@ -22,6 +22,10 @@ export interface ICreateBoardDialog {
   onCreateBoardOpen: () => void;
 }
 
+export interface IAddIdeiaDialog {
+  onAddIdeiaOpen: () => void;
+}
+
 export interface ILoginDialog {
   onLoginOpen: () => void;
   onLoginClose: () => void;

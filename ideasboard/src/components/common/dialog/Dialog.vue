@@ -101,7 +101,7 @@
   @import "../../../assets/defaults";
 
   .dialog-full {
-    @apply w-full h-full bg-slate-900 absolute top-0 bg-opacity-20;
+    @apply w-full h-full bg-slate-900 fixed top-0 bg-opacity-20 left-0;
 
     &__box {
       @apply w-auto h-auto bg-white px-10 py-5 shadow-sm min-w-[450px] rounded-md;
