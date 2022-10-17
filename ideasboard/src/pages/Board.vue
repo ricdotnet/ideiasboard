@@ -12,7 +12,7 @@
           <div v-for="(ideia, index) of state.ideias" :key="index">
             <IdeiaItem :ideia="ideia"
                        :board="state.board.key"
-                       :client-id="sub.getClientId"
+                       :client-id="subscriptionStore.$clientId"
                        @on-liked="sortIdeias()"
             />
           </div>
@@ -30,14 +30,13 @@
   import axios from 'axios';
   import { TransitionSlot } from '../components/common';
   import { BoardHeader, BoardNotFound, IdeiaItem, ShareableLink } from '../components/blocks';
-  import { useSubscriptionStore } from '../stores';
+  import { subscriptionStore } from '../stores/SubscriptionStore';
   import { IBoard, IBoardPageState, IIdea } from '../types';
   import { processBoard } from '../services';
 
   const base = inject('base');
   const api = inject('api');
   const { params } = useRoute();
-  const sub = useSubscriptionStore();
 
   const state = reactive<IBoardPageState>({
     loading: true,
@@ -48,7 +47,7 @@
 
   onBeforeMount(async () => {
     axios.get(`${api}/api/board/${params['key']}`)
-      .then((response) => processBoard(state, sub, params)(response.data.board))
+      .then((response) => processBoard(state, subscriptionStore, params)(response.data.board))
       .catch(() => {
         console.error('Could not fetch board.');
         state.loading = false;
@@ -56,7 +55,7 @@
   });
 
   onUnmounted(() => {
-    sub.unsub();
+    subscriptionStore.unsub();
   });
 
   function sortIdeias() {

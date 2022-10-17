@@ -1,18 +1,17 @@
 import axios, { AxiosResponse } from 'axios';
 import { useLocalStorage } from './UseLocalStorage';
-import { useUserStore } from '../stores';
+import { userStore } from '../stores/UserStore';
 
 export const useBoard = () => {
   const api = import.meta.env.VITE_API;
   const { value } = useLocalStorage();
-  const userStore = useUserStore();
 
   const getBoard = async (id: string) => {
-
+    console.log('empty here...');
   };
 
   const getAllBoards = async () => {
-    const email = userStore.email;
+    const email = userStore.$email;
 
     const params = new URLSearchParams();
     params.append('email', email);
@@ -23,7 +22,7 @@ export const useBoard = () => {
       }
     });
 
-    userStore.boards = response.data.boards;
+    userStore.$boards = response.data.boards;
   };
 
   return {

@@ -1,45 +1,48 @@
-import { defineStore } from 'pinia';
+import { Store } from '@idevelopthings/vue-class-stores/vue';
 import axios from 'axios';
 
-interface IState {
+interface SubscriptionStoreInterface {
   eventSource: EventSource | null;
   clientId: string;
-  api?: string; // because we inject some global state into the store (api and base) we need this
-  base?: string;
 }
 
-const useSubscriptionStore = defineStore('subscription', {
-  state: (): IState => ({
-    eventSource: null,
-    clientId: '',
-  }),
-  getters: {
-    getSub: (state) => state.eventSource,
-    getClientId: (state) => state.clientId,
-  },
-  actions: {
-    subscribe(boardId: string) {
-      if ( !this.eventSource ) {
-        this.eventSource = new EventSource(`${this.api}/api/realtime`);
-
-        this.eventSource.addEventListener('ES_CONNECT', async (e): Promise<void> => {
-          const { clientId } = JSON.parse(e.data);
-          this.clientId = clientId;
-
-          await axios.post(`${this.api}/api/realtime`, {
-            clientId,
-            boardId,
-          });
-        });
-      }
-    },
-    unsub() {
-      this.eventSource?.close();
-      this.eventSource = null;
-    }
+class SubscriptionStore extends Store<SubscriptionStore, SubscriptionStoreInterface>() {
+  get state(): SubscriptionStoreInterface {
+    return {
+      eventSource: null,
+      clientId: '',
+    };
   }
-});
 
-export {
-  useSubscriptionStore
-};
+  get sub() {
+    return this.$eventSource;
+  }
+
+  get clientId() {
+    return this.$clientId;
+  }
+
+  subscribe(boardId: string) {
+    if (this.$eventSource) return;
+
+    this.$eventSource = new EventSource('http://localhost:3200/api/realtime');
+
+    this.$eventSource.addEventListener('ES_CONNECT', async (e): Promise<void> => {
+      const { clientId } = JSON.parse(e.data);
+      this.$clientId = clientId;
+
+      await axios.post('http://localhost:3200/api/realtime', {
+        clientId,
+        boardId,
+      });
+    });
+  }
+
+  unsub() {
+    this.$eventSource?.close();
+    this.$eventSource = null;
+  }
+
+}
+
+export const subscriptionStore = new SubscriptionStore();

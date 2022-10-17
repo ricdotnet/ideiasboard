@@ -4,7 +4,7 @@
       <div class="nav__container-logo">IdeiasBoard</div>
       <div class="nav__container-links">
         <router-link to="/">Home</router-link>
-        <template v-if="!userStore.email">
+        <template v-if="!userStore.$email">
           <a href="javascript:;" @click="onLoginClick()">Login</a>
         </template>
         <template v-else>
@@ -30,14 +30,13 @@
 <script setup lang="ts">
   import { ref } from 'vue';
   import { useRoute } from 'vue-router';
-  import { useUserStore } from '../../../stores';
+  import { userStore } from '../../../stores/UserStore';
   import { useAuth } from '../../../composables';
   import { Button } from '../../common';
   import { CreateBoardDialog, LoginActionMessageDialog, LoginDialog } from '../';
   import { ICreateBoardDialog, ILoginActionMessageDialog, ILoginDialog } from '../../../types';
 
   const route = useRoute();
-  const userStore = useUserStore();
   const createBoardDialog = ref<ICreateBoardDialog>();
   const loginDialog = ref<ILoginDialog>();
   const loginActionMessageDialog = ref<ILoginActionMessageDialog>();

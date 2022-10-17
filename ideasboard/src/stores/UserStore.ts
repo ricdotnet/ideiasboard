@@ -1,13 +1,17 @@
-import { defineStore } from 'pinia';
-import { IUserBoards } from '../types';
+import { Store } from '@idevelopthings/vue-class-stores/vue';
 
-const useUserStore = defineStore('user', {
-  state: () => ({
-    email: <string>'',
-    boards: <IUserBoards>{},
-  }),
-});
+interface UserStoreInterface {
+  email: string;
+  boards: any[];
+}
 
-export {
-  useUserStore
-};
+class UserStore extends Store<UserStore, UserStoreInterface>() {
+  get state() {
+    return {
+      email: '',
+      boards: [],
+    };
+  }
+}
+
+export const userStore = new UserStore();

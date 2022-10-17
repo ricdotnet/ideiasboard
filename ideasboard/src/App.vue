@@ -16,11 +16,10 @@
   import { Nav, ToastList } from './components/blocks';
   import { useAuth, useLocalStorage } from './composables';
   import { unwrap } from './utils';
-  import { useUserStore } from './stores';
+  import { userStore } from './stores/UserStore';
 
   const { value, remove } = useLocalStorage();
   const { authenticate } = useAuth();
-  const userStore = useUserStore();
 
   const state = reactive({
     loading: true,

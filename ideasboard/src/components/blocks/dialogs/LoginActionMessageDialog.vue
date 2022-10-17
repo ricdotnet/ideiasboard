@@ -1,7 +1,7 @@
 <template>
   <Dialog title="Check your Email"
           :is-open="state.isLoginActionMessageDialogOpen"
-          :is-actioning="state.isSigningIn"
+          :is-actioning="state.isLoginActionMessageDialogOpen"
           @on-close="onLoginActionMessageDialogClose()">
     Please check your email for a Login link. Click on it and you should be logged into the app.
   </Dialog>

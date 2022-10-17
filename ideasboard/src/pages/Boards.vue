@@ -25,11 +25,10 @@
 
 <script setup lang="ts">
   import { computed, ComputedRef, onBeforeMount, reactive } from 'vue';
-  import { useUserStore } from '../stores';
+  import { userStore } from '../stores/UserStore';
   import { useBoard } from '../composables';
   import { IUserBoards } from '../types';
 
-  const userStore = useUserStore();
   const { getAllBoards } = useBoard();
 
   interface IState {
@@ -39,7 +38,7 @@
 
   const state = reactive<IState>({
     loading: true,
-    boards: computed(() => userStore.boards ?? null)
+    boards: computed(() => userStore.$boards ?? null)
   });
 
   onBeforeMount(async () => {

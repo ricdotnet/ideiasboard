@@ -21,7 +21,7 @@
 <script setup lang="ts">
   import { inject, reactive, ref } from 'vue';
   import { useRoute } from 'vue-router';
-  import { useSubscriptionStore } from '../../../stores';
+  import { subscriptionStore } from '../../../stores/SubscriptionStore';
   import { Dialog, ErrorMessage, Input } from '../../common';
   import axios from 'axios';
 
@@ -33,7 +33,6 @@
   const api = inject('api');
   const { params } = useRoute();
   const ideia = ref<IInput>();
-  const sub = useSubscriptionStore();
 
   const state = reactive({
     isAddingNewIdeia: false,
@@ -51,7 +50,7 @@
     state.isError = false;
   }
 
-  function onSubmitIdeia(e: Event) {
+  function onSubmitIdeia(e: any) {
     e.preventDefault();
     e.stopPropagation();
 
@@ -60,7 +59,7 @@
 
     axios.post(`${api}/api/ideia`, {
       board: params['key'],
-      clientId: sub.getClientId,
+      clientId: subscriptionStore.$clientId,
       content: ideia.value?.getValue(),
     })
       .then(() => {

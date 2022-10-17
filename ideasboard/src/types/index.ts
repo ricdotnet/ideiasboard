@@ -40,6 +40,7 @@ export interface IListBoard {
   key: string;
   name: string;
   ideias: number;
+  created_at: string;
 }
 
 export interface IUserBoards {

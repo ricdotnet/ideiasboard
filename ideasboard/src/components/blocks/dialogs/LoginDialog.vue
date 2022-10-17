@@ -49,7 +49,7 @@
     state.isSignInOpen = false;
   }
 
-  async function onLoginSubmit(e: Event) {
+  async function onLoginSubmit(e: any) {
     e.preventDefault();
     e.stopPropagation();
 
