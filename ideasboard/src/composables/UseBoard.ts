@@ -16,7 +16,7 @@ export const useBoard = () => {
     const params = new URLSearchParams();
     params.append('email', email);
 
-    const response: AxiosResponse = await axios.post(`${api}/api/board/all`, params, {
+    const response: AxiosResponse = await axios.post(`${api}/board/all`, params, {
       headers: {
         'Authorization': `Bearer ${value('token')?.value}`,
       }

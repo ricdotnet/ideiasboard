@@ -25,13 +25,13 @@ class SubscriptionStore extends Store<SubscriptionStore, SubscriptionStoreInterf
   subscribe(boardId: string) {
     if (this.$eventSource) return;
 
-    this.$eventSource = new EventSource(`${this.api}/realtime`);
+    this.$eventSource = new EventSource(`${import.meta.env.VITE_API}/realtime`);
 
     this.$eventSource.addEventListener('ES_CONNECT', async (e): Promise<void> => {
       const { clientId } = JSON.parse(e.data);
       this.$clientId = clientId;
 
-      await axios.post(`${this.api}/realtime`, {
+      await axios.post(`${import.meta.env.VITE_API}/realtime`, {
         clientId,
         boardId,
       });

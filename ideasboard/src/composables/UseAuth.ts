@@ -22,7 +22,7 @@ const useAuth = () => {
     params.append('email', email.replace(' ', '').trim());
 
     try {
-      const response = await axios.post(`${api}/api/auth`, params);
+      const response = await axios.post(`${api}/auth`, params);
       data.value = response.data;
     } catch (err) {
       error.value = 'something went wrong....';
@@ -37,7 +37,7 @@ const useAuth = () => {
     const error = ref<string>();
 
     try {
-      const response: AxiosResponse = await axios.post(`${api}/api/auth/${token}`);
+      const response: AxiosResponse = await axios.post(`${api}/auth/${token}`);
       data.value = response.data;
     } catch (err) {
       error.value = 'could not authenticate';
@@ -53,7 +53,7 @@ const useAuth = () => {
     let error: any = null;
 
     try {
-      const response: any = await axios.post(`${api}/api/auth/verify`, {}, {
+      const response: any = await axios.post(`${api}/auth/verify`, {}, {
         headers: {
           'Authorization': `Bearer ${token}`
         }

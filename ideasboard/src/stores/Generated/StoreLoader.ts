@@ -21,7 +21,10 @@ export const stores = [{
         importPath: "../UserStore.ts",
         exportName: "userStore",
         vueBinding: "$user",
-        actions: [],
+        actions: [{
+                name: "boards",
+                params: []
+            }],
         module: () => import.meta.glob("../UserStore.ts", { eager: true })
     }];
 if (import.meta.hot) {
