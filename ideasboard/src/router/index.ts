@@ -1,10 +1,10 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
 
-import { Auth, Board, Boards, Home } from '../pages';
+import { Auth, Board, BoardList, Home } from '../pages';
 
 const routes: RouteRecordRaw[] = [
   { path: '/', component: Home },
-  { path: '/boards', component: Boards },
+  { path: '/boards', component: BoardList },
   { path: '/board/:key', component: Board },
   { path: '/auth', component: Auth },
 ];

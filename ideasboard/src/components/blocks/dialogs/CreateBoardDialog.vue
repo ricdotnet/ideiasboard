@@ -52,7 +52,7 @@
     }
 
     try {
-      await axios.post(`${api}/api/board`, state.form);
+      await axios.post(`${api}/board`, state.form);
       router.push(`/board/${key.value}`);
     } catch (error) {
       // handle error

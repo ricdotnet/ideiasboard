@@ -10,23 +10,7 @@ export const useBoard = () => {
     console.log('empty here...');
   };
 
-  const getAllBoards = async () => {
-    const email = userStore.$email;
-
-    const params = new URLSearchParams();
-    params.append('email', email);
-
-    const response: AxiosResponse = await axios.post(`${api}/board/all`, params, {
-      headers: {
-        'Authorization': `Bearer ${value('token')?.value}`,
-      }
-    });
-
-    userStore.$boards = response.data.boards;
-  };
-
   return {
     getBoard,
-    getAllBoards,
   };
 };
