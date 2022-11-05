@@ -71,11 +71,11 @@
 
   const state = reactive({
     showActions: computed(() => props.showActions || false),
-    isActioning: computed(() => props.isActioning),
+    isActioning: computed(() => props.isActioning || false),
     isOpen: computed(() => props.isOpen),
     title: props.title || 'Dialog',
     submitLabel: computed(() => props.submitLabel),
-    formId: computed(() => props.formId || null),
+    formId: computed(() => props.formId || undefined),
   });
 
   function onClickDialogSubmit() {

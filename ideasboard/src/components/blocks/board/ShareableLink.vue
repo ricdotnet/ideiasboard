@@ -4,7 +4,7 @@
       brainstorming.
     </div>
     <div class="shareable-container__link">
-      <Input class="shareable-container__link-input" id="link" disabled="true" :value="state.link"/>
+      <Input class="shareable-container__link-input" id="link" :disabled="true" :value="state.link"/>
       <IconButton color="plain" @click="copyLinkToClipboard()">
         <ClipboardCopyIcon class="shareable-container__link-icon"/>
       </IconButton>

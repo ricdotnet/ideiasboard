@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "@heroicons/vue": "^1.0.6",
-    "@idevelopthings/vue-class-stores": "^1.0.6",
+    "@idevelopthings/vue-class-stores": "^1.0.11",
     "axios": "^0.27.2",
     "pocketbase": "^0.1.2",
     "sass": "^1.53.0",

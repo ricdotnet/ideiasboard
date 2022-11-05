@@ -21,7 +21,7 @@
   const props = defineProps<{
     id: string;
     label?: string;
-    disabled?: string;
+    disabled?: boolean;
     value?: string;
     type?: string;
     required?: boolean;
@@ -31,7 +31,7 @@
     id: props.id,
     label: computed(() => props.label),
     value: <string | undefined>'',
-    disabled: computed(() => props.disabled),
+    disabled: props.disabled ?? false,
     customValue: computed(() => props.value),
     type: computed(() => props.type || 'text'),
     required: computed(() => props.required || false),

@@ -33,7 +33,7 @@
 
   interface IState {
     loading: boolean;
-    boards: ComputedRef<IUserBoards>;
+    boards: ComputedRef<IUserBoards | null>;
   }
 
   const state = reactive<IState>({

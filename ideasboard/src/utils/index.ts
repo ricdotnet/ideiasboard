@@ -9,5 +9,6 @@ export function wrap(value: RefValue): Ref {
 
 export function unwrap<T extends RefValue>(ref: Ref | T | undefined): T | null {
   if (typeof ref === undefined) return null;
+  // @ts-ignore
   return (isRef(ref)) ? ref.value : ref;
 }

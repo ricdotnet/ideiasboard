@@ -7,7 +7,7 @@ import './assets/_defaults.scss';
 
 const app = createApp(App);
 
-app.use(StoreManager, import.meta.glob('./stores/Generated/StoreLoader.ts', { eager: true }));
+app.use(StoreManager.boot());
 
 app.provide('base', import.meta.env.VITE_BASE);
 app.provide('api', import.meta.env.VITE_API);
